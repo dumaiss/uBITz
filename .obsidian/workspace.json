@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "uBITz Platform Spec/2.0- μBITz Host Specification.md",
+                "file": "uBITz Platform Spec/3.0- μBITz Bank Specification.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2.0- μBITz Host Specification"
+              "title": "3.0- μBITz Bank Specification"
             }
           }
         ]
@@ -186,17 +186,17 @@
   },
   "active": "3dafccca19f5cf3b",
   "lastOpenFiles": [
-    "uBITz Platform Spec/0.0- μBITz Platform Specification.md",
-    "uBITz Platform Spec/1.0- μBITz Dock Specification.md",
     "uBITz Platform Spec/2.0- μBITz Host Specification.md",
+    "uBITz Platform Spec/1.2- Part 2 — Serial Profile (Framed LVDS).md",
+    "uBITz Platform Spec/1.1- Part 1 — Core Logical Specification.md",
+    "uBITz Platform Spec/1.0- μBITz Dock Specification.md",
+    "uBITz Platform Spec/0.0- μBITz Platform Specification.md",
+    "uBITz Platform Spec/4.1- μBITz Versatile Tile Classes — Overview.md",
+    "uBITz Platform Spec/4.0- μBITz Tile Base Specification.md",
     "uBITz Platform Spec/3.0- μBITz Bank Specification.md",
     "uBITz Platform Spec/4.3- µBITz Sound Processor Tile Specification.md",
     "uBITz Platform Spec/4.2- µBITz VDP Tile Specification.md",
-    "uBITz Platform Spec/4.1- μBITz Versatile Tile Classes — Overview.md",
     "µBITz VDP Tile Specification v1 0 2ae84f5aa5ee8032a123c3d11f3690e3.md",
-    "uBITz Platform Spec/4.0- μBITz Tile Base Specification.md",
-    "uBITz Platform Spec/1.1- Part 1 — Core Logical Specification.md",
-    "uBITz Platform Spec/1.2- Part 2 — Serial Profile (Framed LVDS).md",
     "uBITzLogo.png",
     "LICENSE.md",
     "uBITz Platform Spec/4.2 µBITz VDP Tile Specification.md",
