@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "uBITz Platform Spec/1- μBITz Dock Specification.md",
+                "file": "uBITz Platform Spec/4.3- µBITz Sound Processor Tile Specification.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "1- μBITz Dock Specification"
+              "title": "4.3- µBITz Sound Processor Tile Specification"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "uBITz Platform Spec/1- μBITz Dock Specification.md",
+                "file": "uBITz Platform Spec/0- μBITz Platform Specification.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 1- μBITz Dock Specification"
+              "title": "Backlinks for 0- μBITz Platform Specification"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "uBITz Platform Spec/1- μBITz Dock Specification.md",
+                "file": "uBITz Platform Spec/0- μBITz Platform Specification.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 1- μBITz Dock Specification"
+              "title": "Outgoing links from 0- μBITz Platform Specification"
             }
           },
           {
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "uBITz Platform Spec/1- μBITz Dock Specification.md",
+                "file": "uBITz Platform Spec/0- μBITz Platform Specification.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 1- μBITz Dock Specification"
+              "title": "Outline of 0- μBITz Platform Specification"
             }
           }
         ]
@@ -186,17 +186,20 @@
   },
   "active": "3dafccca19f5cf3b",
   "lastOpenFiles": [
+    "uBITz Platform Spec/4.2- µBITz VDP Tile Specification.md",
+    "uBITz Platform Spec/4.1- μBITz Versatile Tile Classes — Overview.md",
+    "µBITz VDP Tile Specification v1 0 2ae84f5aa5ee8032a123c3d11f3690e3.md",
+    "uBITz Platform Spec/4.0- μBITz Tile Base Specification.md",
+    "uBITz Platform Spec/1.1- Part 1 — Core Logical Specification.md",
+    "uBITz Platform Spec/1.2- Part 2 — Serial Profile (Framed LVDS).md",
     "uBITz Platform Spec/0- μBITz Platform Specification.md",
     "uBITzLogo.png",
-    "uBITz Platform Spec/4.2- µBITz VDP Tile Specification.md",
+    "LICENSE.md",
+    "uBITz Platform Spec/1- μBITz Dock Specification.md",
     "uBITz Platform Spec/4.3- µBITz Sound Processor Tile Specification.md",
     "uBITz Platform Spec/4.2 µBITz VDP Tile Specification.md",
-    "uBITz Platform Spec/4.1- μBITz Versatile Tile Classes — Overview.md",
     "uBITz Platform Spec/4.1- μBITz Versatile Tile Classes.md",
     "uBITz Platform Spec/4.0- μBITz Versatile Tile Classes.md",
-    "uBITz Platform Spec/1.2- Part 2 — Serial Profile (Framed LVDS).md",
-    "uBITz Platform Spec/1.1- Part 1 — Core Logical Specification.md",
-    "uBITz Platform Spec/1- μBITz Dock Specification.md",
     "uBITz Platform Spec/μBITz Versatile Tile Classes — Overview Specificat 2af84f5aa5ee8039b746f722fb57a73e.md",
     "uBITz Platform Spec/μBITz Platform Specification v1 0 2a684f5aa5ee80d09fe9efebb834f921.md",
     "uBITz Platform Spec/μBITz Dock Specification v1 0 29c84f5aa5ee801ebf1adc59ea394003.md",
@@ -206,7 +209,6 @@
     "uBITz Platform Spec/µBITz Sound Processor Tile Specification v1 0 2af84f5aa5ee80f5b952f745d3eb0671.md",
     "uBITz Platform Spec",
     "TRADEMARKS.md",
-    "README.md",
-    "LICENSE.md"
+    "README.md"
   ]
 }

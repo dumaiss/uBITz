@@ -1,4 +1,3 @@
-# μBITz Platform Specification v1.0
 
 # μBITz Platform Specification v1.0
 
