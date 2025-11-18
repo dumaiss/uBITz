@@ -11,12 +11,14 @@
             "id": "3dafccca19f5cf3b",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "uBITzLogo.png"
+                "file": "uBITz Platform Spec/1- μBITz Dock Specification.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "uBITzLogo"
+              "icon": "lucide-file",
+              "title": "1- μBITz Dock Specification"
             }
           }
         ]
@@ -76,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 435.5
   },
   "right": {
     "id": "413c6b48161b269d",
@@ -92,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "uBITzLogo.png",
+                "file": "uBITz Platform Spec/1- μBITz Dock Specification.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for uBITzLogo"
+              "title": "Backlinks for 1- μBITz Dock Specification"
             }
           },
           {
@@ -111,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "uBITzLogo.png",
+                "file": "uBITz Platform Spec/1- μBITz Dock Specification.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from uBITzLogo"
+              "title": "Outgoing links from 1- μBITz Dock Specification"
             }
           },
           {
@@ -154,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "uBITzLogo.png",
+                "file": "uBITz Platform Spec/1- μBITz Dock Specification.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of uBITzLogo"
+              "title": "Outline of 1- μBITz Dock Specification"
             }
           }
         ]
@@ -178,11 +180,31 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "bases:Create new base": false,
+      "github-sync:Sync with Remote": false
     }
   },
   "active": "3dafccca19f5cf3b",
   "lastOpenFiles": [
+    "uBITz Platform Spec/0- μBITz Platform Specification.md",
+    "uBITzLogo.png",
+    "uBITz Platform Spec/4.2- µBITz VDP Tile Specification.md",
+    "uBITz Platform Spec/4.3- µBITz Sound Processor Tile Specification.md",
+    "uBITz Platform Spec/4.2 µBITz VDP Tile Specification.md",
+    "uBITz Platform Spec/4.1- μBITz Versatile Tile Classes — Overview.md",
+    "uBITz Platform Spec/4.1- μBITz Versatile Tile Classes.md",
+    "uBITz Platform Spec/4.0- μBITz Versatile Tile Classes.md",
+    "uBITz Platform Spec/1.2- Part 2 — Serial Profile (Framed LVDS).md",
+    "uBITz Platform Spec/1.1- Part 1 — Core Logical Specification.md",
+    "uBITz Platform Spec/1- μBITz Dock Specification.md",
+    "uBITz Platform Spec/μBITz Versatile Tile Classes — Overview Specificat 2af84f5aa5ee8039b746f722fb57a73e.md",
+    "uBITz Platform Spec/μBITz Platform Specification v1 0 2a684f5aa5ee80d09fe9efebb834f921.md",
+    "uBITz Platform Spec/μBITz Dock Specification v1 0 29c84f5aa5ee801ebf1adc59ea394003.md",
+    "uBITz Platform Spec/Part 2 — Serial Profile (Framed LVDS) 29d84f5aa5ee80a3ba2fc569e5a5cb9a.md",
+    "uBITz Platform Spec/Part 1 — Core Logical Specification 29c84f5aa5ee80819925c9344484c7f7.md",
+    "uBITz Platform Spec/µBITz VDP Tile Specification v1 0 2ae84f5aa5ee8032a123c3d11f3690e3.md",
+    "uBITz Platform Spec/µBITz Sound Processor Tile Specification v1 0 2af84f5aa5ee80f5b952f745d3eb0671.md",
+    "uBITz Platform Spec",
     "TRADEMARKS.md",
     "README.md",
     "LICENSE.md"
