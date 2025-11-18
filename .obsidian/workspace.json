@@ -1,0 +1,190 @@
+{
+  "main": {
+    "id": "48b65b9b119fe8b2",
+    "type": "split",
+    "children": [
+      {
+        "id": "52f82ff4f38dfa3c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3dafccca19f5cf3b",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "uBITzLogo.png"
+              },
+              "icon": "lucide-image",
+              "title": "uBITzLogo"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "092f313f3925c780",
+    "type": "split",
+    "children": [
+      {
+        "id": "460e64f01edc3997",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fe8b230c1ae8ddbc",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "5a7a5eff1d812ff2",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "c0b1bbaecdcbaabc",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "413c6b48161b269d",
+    "type": "split",
+    "children": [
+      {
+        "id": "62294c345e7564dd",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d3c1feb218069402",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "uBITzLogo.png",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for uBITzLogo"
+            }
+          },
+          {
+            "id": "069e1c2530992d93",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "uBITzLogo.png",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from uBITzLogo"
+            }
+          },
+          {
+            "id": "2092dfec3b8c6e9f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "a94bc5b8db47dbac",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "748ae3933c731a36",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "uBITzLogo.png",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of uBITzLogo"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "3dafccca19f5cf3b",
+  "lastOpenFiles": [
+    "TRADEMARKS.md",
+    "README.md",
+    "LICENSE.md"
+  ]
+}
