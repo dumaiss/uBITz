@@ -76,7 +76,7 @@ module addr_decoder #(
     // -----------------------------------------------------------------
     // Submodules
     // -----------------------------------------------------------------
-    addressdecode_cfg #(
+    addr_decoder_cfg #(
         .ADDR_W (ADDR_W),
         .NUM_WIN(NUM_WIN)
     ) u_cfg (
@@ -90,7 +90,7 @@ module addr_decoder #(
         .op_flat   (op_flat)
     );
 
-    addressdecode_match #(
+    addr_decoder_match #(
         .ADDR_W     (ADDR_W),
         .NUM_WIN    (NUM_WIN),
         .WIN_INDEX_W(WIN_INDEX_W)
@@ -109,7 +109,7 @@ module addr_decoder #(
         .sel_slot  (sel_slot_sig)
     );
 
-    addressdecode_fsm #(
+    addr_decoder_fsm #(
         .NUM_SLOTS(NUM_SLOTS)
     ) u_fsm (
         .clk         (clk),
@@ -122,7 +122,7 @@ module addr_decoder #(
         .ready_n     (ready_n_sig)
     );
 
-    addressdecode_datapath u_dp (
+    addr_decoder_datapath u_dp (
         .iorq_n    (iorq_n),
         .is_read   (is_read_sig),
         .is_write  (is_write_sig),

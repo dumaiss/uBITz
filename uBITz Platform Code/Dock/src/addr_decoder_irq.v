@@ -1,6 +1,6 @@
-// Submodule: addressdecode_irq
+// Submodule: addr_decoder_irq
 // Purpose: interrupt routing and Mode-2 acknowledge resolution.
-module addressdecode_irq #(
+module addr_decoder_irq #(
     parameter integer NUM_IRQ_SLOTS = 4
 )(
     input                           clk,

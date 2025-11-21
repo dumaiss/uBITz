@@ -1,6 +1,6 @@
-// Submodule: addressdecode_datapath
+// Submodule: addr_decoder_datapath
 // Purpose: control data transceivers and 0xFF filler driver.
-module addressdecode_datapath (
+module addr_decoder_datapath (
     input  logic iorq_n,
     input  logic is_read,
     input  logic is_write,

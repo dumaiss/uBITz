@@ -1,6 +1,6 @@
-// Submodule: addressdecode_cfg
+// Submodule: addr_decoder_cfg
 // Purpose: configuration storage for BASE/MASK/SLOT/OP tables.
-module addressdecode_cfg #(
+module addr_decoder_cfg #(
     parameter integer ADDR_W  = 32,
     parameter integer NUM_WIN = 16
 )(

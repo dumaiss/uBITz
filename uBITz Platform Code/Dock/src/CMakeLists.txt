@@ -6,10 +6,11 @@ project(addressdecode_fpga LANGUAGES NONE)
 # Paths to sources (top-level only; benches are excluded from synthesis).
 set(ADDRDECODE_SRCS
     ${CMAKE_SOURCE_DIR}/addr_decoder.v
-    ${CMAKE_SOURCE_DIR}/addressdecode_cfg.v
-    ${CMAKE_SOURCE_DIR}/addressdecode_match.v
-    ${CMAKE_SOURCE_DIR}/addressdecode_fsm.v
-    ${CMAKE_SOURCE_DIR}/addressdecode_datapath.v
+    ${CMAKE_SOURCE_DIR}/addr_decoder_cfg.v
+    ${CMAKE_SOURCE_DIR}/addr_decoder_match.v
+    ${CMAKE_SOURCE_DIR}/addr_decoder_fsm.v
+    ${CMAKE_SOURCE_DIR}/addr_decoder_datapath.v
+    ${CMAKE_SOURCE_DIR}/addr_decoder_irq.v
     ${CMAKE_SOURCE_DIR}/irq_router.v
 )
 

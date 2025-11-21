@@ -1,6 +1,6 @@
-// Submodule: addressdecode_match
+// Submodule: addr_decoder_match
 // Purpose: window match, priority select, and slot selection.
-module addressdecode_match #(
+module addr_decoder_match #(
     parameter integer ADDR_W      = 32,
     parameter integer NUM_WIN     = 16,
     parameter integer WIN_INDEX_W = 4

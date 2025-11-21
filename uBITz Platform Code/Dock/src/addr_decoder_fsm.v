@@ -1,6 +1,6 @@
-// Submodule: addressdecode_fsm
+// Submodule: addr_decoder_fsm
 // Purpose: /READY handshake and /CS generation with per-slot ready sync.
-module addressdecode_fsm #(
+module addr_decoder_fsm #(
     parameter integer NUM_SLOTS = 5
 )(
     input  logic              clk,
