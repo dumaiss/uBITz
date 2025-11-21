@@ -1,0 +1,77 @@
+# -----------------------------------------------------------------------------
+# Dummy pin constraints for the addressdecode module.
+# Populate the set_io placeholders with real pins before attempting hardware
+# synthesis; this template only enumerates the top-level ports.
+
+# ------------ Inputs ---------------------------------------------------------
+# addr[7:0]
+# set_io addr[0]    <pin>
+# set_io addr[1]    <pin>
+# set_io addr[2]    <pin>
+# set_io addr[3]    <pin>
+# set_io addr[4]    <pin>
+# set_io addr[5]    <pin>
+# set_io addr[6]    <pin>
+# set_io addr[7]    <pin>
+
+# iorq_n
+# set_io iorq_n     <pin>
+
+# main dock clock/reset
+# set_io clk        <pin>
+# set_io rst_n      <pin>
+
+# CPU read/write indicator
+# set_io r_w_       <pin>
+
+# per-slot device ready (active-low)
+# set_io dev_ready_n[0] <pin>
+# set_io dev_ready_n[1] <pin>
+# set_io dev_ready_n[2] <pin>
+# set_io dev_ready_n[3] <pin>
+# set_io dev_ready_n[4] <pin>
+
+# cfg port
+# set_io cfg_clk    <pin>
+# set_io cfg_we     <pin>
+# set_io cfg_addr[0]  <pin>
+# set_io cfg_addr[1]  <pin>
+# set_io cfg_addr[2]  <pin>
+# set_io cfg_addr[3]  <pin>
+# set_io cfg_addr[4]  <pin>
+# set_io cfg_addr[5]  <pin>
+# set_io cfg_wdata[0] <pin>
+# set_io cfg_wdata[1] <pin>
+# set_io cfg_wdata[2] <pin>
+# set_io cfg_wdata[3] <pin>
+# set_io cfg_wdata[4] <pin>
+# set_io cfg_wdata[5] <pin>
+# set_io cfg_wdata[6] <pin>
+# set_io cfg_wdata[7] <pin>
+
+# ------------ Outputs --------------------------------------------------------
+# cs[4:0]
+# set_io cs[0]  <pin>
+# set_io cs[1]  <pin>
+# set_io cs[2]  <pin>
+# set_io cs[3]  <pin>
+# set_io cs[4]  <pin>
+
+# cs_n[4:0]
+# set_io cs_n[0]  <pin>
+# set_io cs_n[1]  <pin>
+# set_io cs_n[2]  <pin>
+# set_io cs_n[3]  <pin>
+# set_io cs_n[4]  <pin>
+
+# win_valid
+# set_io win_valid  <pin>
+
+# win_index[1:0]
+# set_io win_index[0]  <pin>
+# set_io win_index[1]  <pin>
+
+# sel_slot[2:0]
+# set_io sel_slot[0]  <pin>
+# set_io sel_slot[1]  <pin>
+# set_io sel_slot[2]  <pin>

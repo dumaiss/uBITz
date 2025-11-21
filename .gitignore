@@ -1,1 +1,15 @@
 /.obsidian
+uBITz Platform Code/Dock/src/abc.history
+uBITz Platform Code/Dock/src/.sconsign.dblite
+uBITz Platform Code/Dock/src/hardware.json
+uBITz Platform Code/Dock/src/addressdecode_tb.vcd
+uBITz Platform Code/Dock/src/hardware.asc
+.gitignore
+uBITz Platform Code/Dock/src/sim.out
+uBITz Platform Code/Dock/src/hardware.bin
+.gitignore
+uBITz Platform Code/Dock/src/addressdecode_tb.gtkw
+uBITz Platform Code/Dock/src/addressdecode_complex_tb.out
+uBITz Platform Code/Dock/src/complex_sim.out
+uBITz Platform Code/Dock/src/tb_sim.out
+uBITz Platform Code/Dock/src/build/

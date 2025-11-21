@@ -1,0 +1,92 @@
+# Temporary pinout for iCE40 HX8K (cb132). Pins are arbitrary but valid for building.
+
+# Address bus
+set_io addr[0] F14
+set_io addr[1] C5
+set_io addr[2] H1
+set_io addr[3] P10
+set_io addr[4] A4
+set_io addr[5] A7
+set_io addr[6] L5
+set_io addr[7] C1
+set_io addr[8] A12
+set_io addr[9] B1
+set_io addr[10] C4
+set_io addr[11] C6
+set_io addr[12] C7
+set_io addr[13] C9
+set_io addr[14] D4
+set_io addr[15] D6
+set_io addr[16] D7
+set_io addr[17] D9
+set_io addr[18] E1
+set_io addr[19] E12
+set_io addr[20] E4
+set_io addr[21] F11
+set_io addr[22] F3
+set_io addr[23] G1
+set_io addr[24] G14
+set_io addr[25] G3
+set_io addr[26] G4
+set_io addr[27] H11
+set_io addr[28] J12
+set_io addr[29] K11
+set_io addr[30] K12
+set_io addr[31] K14
+
+# Qualifiers and control
+set_io iorq_n G12
+set_io clk    M12
+set_io rst_n  A5
+set_io r_w_   L1
+
+# Device ready inputs (active-low)
+set_io dev_ready_n[0] D14
+set_io dev_ready_n[1] A2
+set_io dev_ready_n[2] B14
+set_io dev_ready_n[3] J1
+set_io dev_ready_n[4] H3
+
+# Config interface
+set_io cfg_clk     A6
+set_io cfg_we      D5
+set_io cfg_addr[0] N1
+set_io cfg_addr[1] L8
+set_io cfg_addr[2] H4
+set_io cfg_addr[3] P11
+set_io cfg_addr[4] C12
+set_io cfg_addr[5] D3
+set_io cfg_addr[6] K3
+set_io cfg_addr[7] L12
+set_io cfg_wdata[0] M1
+set_io cfg_wdata[1] P7
+set_io cfg_wdata[2] P4
+set_io cfg_wdata[3] P12
+set_io cfg_wdata[4] A3
+set_io cfg_wdata[5] C3
+set_io cfg_wdata[6] E14
+set_io cfg_wdata[7] D12
+
+# Active-low chip select mirror
+set_io cs_n[0] E11
+set_io cs_n[1] H12
+set_io cs_n[2] F4
+set_io cs_n[3] M3
+set_io cs_n[4] L4
+
+# Status outputs
+set_io ready_n   K4
+set_io win_valid J3
+set_io win_index[0] F12
+set_io win_index[1] P14
+set_io win_index[2] L6
+set_io win_index[3] L14
+set_io sel_slot[0]  D1
+set_io sel_slot[1]  M9
+set_io sel_slot[2]  J11
+set_io io_r_w_    A11
+
+# Data bus transceiver controls
+set_io data_oe_n C10
+set_io data_dir  G11
+set_io ff_oe_n   A10
