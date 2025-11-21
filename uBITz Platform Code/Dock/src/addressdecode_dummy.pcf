@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Dummy pin constraints for the addressdecode module.
+# Dummy pin constraints for the addr_decoder module.
 # Populate the set_io placeholders with real pins before attempting hardware
 # synthesis; this template only enumerates the top-level ports.
 

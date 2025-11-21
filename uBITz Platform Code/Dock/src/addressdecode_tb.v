@@ -1,4 +1,4 @@
-// Simple testbench for addressdecode: exercises masking, priority, and gating.
+// Simple testbench for addr_decoder: exercises masking, priority, and gating.
 
 `timescale 1ns/1ps
 
@@ -147,7 +147,7 @@ module addressdecode_tb;
         end
     endtask
 
-    addressdecode #(
+    addr_decoder #(
         .ADDR_W(8),
         .NUM_WIN(4),
         .NUM_SLOTS(5)
@@ -232,7 +232,7 @@ module addressdecode_tb;
         join
         dev_ready_n[1] = 1'b1;
 
-        $display("All addressdecode tests passed.");
+        $display("All addr_decoder tests passed.");
         $finish;
     end
 

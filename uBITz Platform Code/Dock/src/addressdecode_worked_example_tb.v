@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-// Behavioral testbench for the addressdecode module.
+// Behavioral testbench for the addr_decoder module.
 module tb_addressdecode;
     reg  [7:0] addr;
     reg        iorq_n;
@@ -28,7 +28,7 @@ module tb_addressdecode;
     wire [4:0] cs_n;
 
     // DUT instantiation
-    addressdecode #(
+    addr_decoder #(
         .ADDR_W(8),
         .NUM_WIN(4),
         .NUM_SLOTS(5)
@@ -249,7 +249,7 @@ module tb_addressdecode;
         iorq_n <= 1'b1;
         @(posedge clk);
 
-        $display("All addressdecode tests completed without fatal errors.");
+        $display("All addr_decoder tests completed without fatal errors.");
         $finish;
     end
 endmodule

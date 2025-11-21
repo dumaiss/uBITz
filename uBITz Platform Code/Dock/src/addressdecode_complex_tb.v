@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-// Complex 32-bit / 16-window testbench for the addressdecode module.
+// Complex 32-bit / 16-window testbench for the addr_decoder module.
 module addressdecode_tb_32bit;
     reg  [31:0] addr;
     reg         iorq_n;
@@ -33,7 +33,7 @@ module addressdecode_tb_32bit;
     reg       sample_ff_oe_n;
 
     // DUT instantiation
-    addressdecode #(
+    addr_decoder #(
         .ADDR_W(32),
         .NUM_WIN(16),
         .NUM_SLOTS(5)

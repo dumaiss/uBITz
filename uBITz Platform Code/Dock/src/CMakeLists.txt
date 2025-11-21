@@ -5,7 +5,7 @@ project(addressdecode_fpga LANGUAGES NONE)
 
 # Paths to sources (top-level only; benches are excluded from synthesis).
 set(ADDRDECODE_SRCS
-    ${CMAKE_SOURCE_DIR}/addressdecode.v
+    ${CMAKE_SOURCE_DIR}/addr_decoder.v
     ${CMAKE_SOURCE_DIR}/addressdecode_cfg.v
     ${CMAKE_SOURCE_DIR}/addressdecode_match.v
     ${CMAKE_SOURCE_DIR}/addressdecode_fsm.v
@@ -34,7 +34,7 @@ foreach(src IN LISTS ADDRDECODE_SRCS)
 endforeach()
 # Generate a yosys script at configure time (handles spaces in paths cleanly).
 file(WRITE ${YOSYS_SCRIPT} "read_verilog -sv ${YOSYS_FILE_LIST}\n")
-file(APPEND ${YOSYS_SCRIPT} "synth_ice40 -top addressdecode -json \"${SYNTH_JSON}\"\n")
+file(APPEND ${YOSYS_SCRIPT} "synth_ice40 -top addr_decoder -json \"${SYNTH_JSON}\"\n")
 
 # Target: synthesize to JSON with yosys (SystemVerilog enabled).
 add_custom_command(
@@ -42,7 +42,7 @@ add_custom_command(
     COMMAND yosys -q -s ${YOSYS_SCRIPT}
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     DEPENDS ${ADDRDECODE_SRCS}
-    COMMENT "Running yosys (addressdecode -> JSON)"
+    COMMENT "Running yosys (addr_decoder -> JSON)"
     VERBATIM
 )
 add_custom_target(synth_json DEPENDS ${SYNTH_JSON})
