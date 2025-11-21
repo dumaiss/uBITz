@@ -12,11 +12,19 @@ set(ADDRDECODE_SRCS
     ${CMAKE_SOURCE_DIR}/addressdecode_datapath.v
 )
 
+# Board/device selection (override with -DFPGA_DEVICE=..., -DFPGA_PACKAGE=..., -DFPGA_PCF=...).
+set(FPGA_DEVICE  "hx8k" CACHE STRING "nextpnr-ice40 device (e.g. hx8k, up5k)")
+set(FPGA_PACKAGE "cb132" CACHE STRING "Package for the chosen device (e.g. cb132, sg48)")
+set(FPGA_PCF     "${CMAKE_SOURCE_DIR}/addressdecode.pcf" CACHE STRING "Path to constraints PCF file")
+
+if (NOT EXISTS "${FPGA_PCF}")
+    message(FATAL_ERROR "PCF file not found: ${FPGA_PCF}")
+endif()
+
 set(SYNTH_JSON ${CMAKE_CURRENT_BINARY_DIR}/hardware.json)
 set(PNR_ASC   ${CMAKE_CURRENT_BINARY_DIR}/hardware.asc)
 set(PNR_RPT   ${CMAKE_CURRENT_BINARY_DIR}/hardware.rpt)
 set(BIT_BIN   ${CMAKE_CURRENT_BINARY_DIR}/hardware.bin)
-set(PCF_FILE ${CMAKE_SOURCE_DIR}/addressdecode.pcf)
 
 set(YOSYS_SCRIPT ${CMAKE_CURRENT_BINARY_DIR}/synth.ys)
 set(YOSYS_FILE_LIST "")
@@ -41,9 +49,9 @@ add_custom_target(synth_json DEPENDS ${SYNTH_JSON})
 # Target: place and route with nextpnr-ice40.
 add_custom_command(
     OUTPUT ${PNR_ASC} ${PNR_RPT}
-    COMMAND nextpnr-ice40 --hx8k --package cb132 --json ${SYNTH_JSON} --pcf ${PCF_FILE} --asc ${PNR_ASC} --report ${PNR_RPT} -q
+    COMMAND nextpnr-ice40 --${FPGA_DEVICE} --package ${FPGA_PACKAGE} --json ${SYNTH_JSON} --pcf ${FPGA_PCF} --asc ${PNR_ASC} --report ${PNR_RPT} -q
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    DEPENDS ${SYNTH_JSON} ${PCF_FILE}
+    DEPENDS ${SYNTH_JSON} ${FPGA_PCF}
     COMMENT "Running nextpnr-ice40 (place & route)"
     VERBATIM
 )
