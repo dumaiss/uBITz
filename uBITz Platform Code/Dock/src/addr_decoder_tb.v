@@ -2,7 +2,7 @@
 
 `timescale 1ns/1ps
 
-module addressdecode_tb;
+module addr_decoder_tb;
     reg        clk;
     reg  [7:0] addr;
     reg        iorq_n;
@@ -170,8 +170,8 @@ module addressdecode_tb;
 
     initial begin
         // Waveform dump for GTKWave.
-        $dumpfile("addressdecode_tb.vcd");
-        $dumpvars(0, addressdecode_tb);
+        $dumpfile("addr_decoder_tb.vcd");
+        $dumpvars(0, addr_decoder_tb);
 
         clk      = 1'b0;
         cfg_clk  = 1'b0;

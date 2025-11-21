@@ -17,7 +17,7 @@ set(ADDRDECODE_SRCS
 # Board/device selection (override with -DFPGA_DEVICE=..., -DFPGA_PACKAGE=..., -DFPGA_PCF=...).
 set(FPGA_DEVICE  "hx8k" CACHE STRING "nextpnr-ice40 device (e.g. hx8k, up5k)")
 set(FPGA_PACKAGE "cb132" CACHE STRING "Package for the chosen device (e.g. cb132, sg48)")
-set(FPGA_PCF     "${CMAKE_SOURCE_DIR}/addressdecode.pcf" CACHE STRING "Path to constraints PCF file")
+set(FPGA_PCF     "${CMAKE_SOURCE_DIR}/addr_decoder.pcf" CACHE STRING "Path to constraints PCF file")
 
 if (NOT EXISTS "${FPGA_PCF}")
     message(FATAL_ERROR "PCF file not found: ${FPGA_PCF}")

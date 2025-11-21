@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 
 // Complex 32-bit / 16-window testbench for the addr_decoder module.
-module addressdecode_tb_32bit;
+module addr_decoder_tb_32bit;
     reg  [31:0] addr;
     reg         iorq_n;
     reg         clk;
@@ -288,7 +288,7 @@ module addressdecode_tb_32bit;
         if (sample_data_oe_n !== 1'b1 || sample_ff_oe_n !== 1'b0)
             $fatal(1, "Test6: unmapped read should disable bridge and enable FF driver");
 
-        $display("TEST PASSED: addressdecode_tb_32bit completed without fatal errors.");
+        $display("TEST PASSED: addr_decoder_tb_32bit completed without fatal errors.");
         $finish;
     end
 endmodule

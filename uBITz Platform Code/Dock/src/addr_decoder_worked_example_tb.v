@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 
 // Behavioral testbench for the addr_decoder module.
-module tb_addressdecode;
+module tb_addr_decoder;
     reg  [7:0] addr;
     reg        iorq_n;
     reg        clk;
