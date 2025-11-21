@@ -14,3 +14,7 @@ uBITz Platform Code/Dock/src/complex_sim.out
 uBITz Platform Code/Dock/src/tb_sim.out
 uBITz Platform Code/Dock/src/build/
 .vscode/settings.json
+
+# Dock/src generated artifacts (generalized)
+uBITz Platform Code/Dock/src/*.out
+uBITz Platform Code/Dock/src/*.vcd

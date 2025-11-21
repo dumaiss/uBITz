@@ -10,6 +10,7 @@ set(ADDRDECODE_SRCS
     ${CMAKE_SOURCE_DIR}/addressdecode_match.v
     ${CMAKE_SOURCE_DIR}/addressdecode_fsm.v
     ${CMAKE_SOURCE_DIR}/addressdecode_datapath.v
+    ${CMAKE_SOURCE_DIR}/irq_router.v
 )
 
 # Board/device selection (override with -DFPGA_DEVICE=..., -DFPGA_PACKAGE=..., -DFPGA_PCF=...).
