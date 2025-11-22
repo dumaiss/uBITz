@@ -10,6 +10,18 @@
 //     * NMI routing entry at cfg_addr = NUM_SLOTS*NUM_TILE_INT_CH + slot
 //     * Write cfg_wdata[7:0] with {enable, idx[3:0]} (others reserved = 0)
 //     * Disabled entries (bit7=0) ignore the corresponding request.
+// Walkthrough:
+//   1) Config domain (cfg_clk): stores per-slot/per-channel routing entries
+//      int_route_slot_ch[][] and nmi_route_slot[]; each byte = {enable, idx[3:0]}.
+//   2) Pending masks reflect currently asserted, routed lines (tile_int_req/tile_nmi_req).
+//      Unrouted sources are ignored. Pending updates are combinational.
+//   3) Active selection: when idle, NMIs are preferred over INTs; picks lowest
+//      slot/channel that is pending. Active is cleared when its line drops.
+//   4) Outputs:
+//      - cpu_int/cpu_nmi: assert the routed CPU pin for the active source (if enabled and in range).
+//      - slot_ack: pulse to the owning slot when irq_ack is seen for a maskable INT.
+//      - irq_int_active/irq_int_slot: export active maskable INT (with routing enabled)
+//        to steer Mode-2 vector fetches elsewhere in the Dock.
 module irq_router #(
     parameter integer NUM_SLOTS        = 5,
     parameter integer NUM_CPU_INT      = 4,
@@ -61,11 +73,11 @@ module irq_router #(
     // ------------------------------------------------------------------
     // Active interrupt tracking
     // ------------------------------------------------------------------
-    reg        active_valid;
-    reg        active_is_nmi;
-    reg [7:0]  active_slot;
-    reg [7:0]  active_ch;       // channel for maskable; 0 for NMI
-    reg [7:0]  active_cpu_idx;  // full route entry (bit7 = enable, [3:0] = index)
+    reg        active_valid;   // 1 when an interrupt is currently active
+    reg        active_is_nmi;  // 1 = NMI, 0 = maskable INT
+    reg [7:0]  active_slot;    // slot owning the active source
+    reg [7:0]  active_ch;      // channel for maskable; 0 for NMI
+    reg [7:0]  active_cpu_idx; // full route entry (bit7 = enable, [3:0] = index)
 
     // Derived view: only maskable, routed INTs count as "active" for vectoring
     wire active_int_routed = active_valid &&
@@ -81,8 +93,8 @@ module irq_router #(
                           : {SLOT_IDX_WIDTH{1'b0}};
 
     // Pending sets
-    reg [NUM_SLOTS*NUM_TILE_INT_CH-1:0] pending_int;
-    reg [NUM_SLOTS-1:0]                 pending_nmi;
+    reg [NUM_SLOTS*NUM_TILE_INT_CH-1:0] pending_int; // maskable pending (routed, level)
+    reg [NUM_SLOTS-1:0]                 pending_nmi; // NMI pending (routed, level)
 
     // ------------------------------------------------------------------
     // Helpers
