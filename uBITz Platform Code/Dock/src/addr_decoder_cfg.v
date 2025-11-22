@@ -1,5 +1,15 @@
 // Submodule: addr_decoder_cfg
 // Purpose: configuration storage for BASE/MASK/SLOT/OP tables.
+// Walkthrough:
+//   - Flattened config arrays (base_flat/mask_flat/slot_flat/op_flat) hold all
+//     window entries back-to-back.
+//   - CFG layout (byte addressed):
+//       * BASE bytes  : BASE_OFF + w*CFG_BYTES + byte
+//       * MASK bytes  : MASK_OFF + w*CFG_BYTES + byte
+//       * SLOT (3b)   : SLOT_OFF + w
+//       * OP (8b)     : OP_OFF   + w
+//   - cfg_we strobes in a single byte on cfg_clk. No readback path here; users
+//     should track writes externally or probe the flattened outputs.
 module addr_decoder_cfg #(
     parameter integer ADDR_W  = 32,
     parameter integer NUM_WIN = 16
@@ -18,13 +28,13 @@ module addr_decoder_cfg #(
     // Number of bytes needed to represent the ADDR_W-bit BASE/MASK fields.
     localparam integer CFG_BYTES = (ADDR_W + 7) / 8;
 
-    // Config layout
+    // Config layout byte offsets
     localparam integer BASE_OFF = 0;
     localparam integer MASK_OFF = BASE_OFF + (NUM_WIN * CFG_BYTES);
     localparam integer SLOT_OFF = MASK_OFF + (NUM_WIN * CFG_BYTES);
     localparam integer OP_OFF   = SLOT_OFF + NUM_WIN;
 
-    // Defaults
+    // Defaults: all windows disabled (mask/base zeroed), op=any, slot=0
     initial begin
         for (int i = 0; i < NUM_WIN; i++) begin
             base_flat[i*ADDR_W +: ADDR_W] = '0;

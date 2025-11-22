@@ -1,5 +1,10 @@
 // Submodule: addr_decoder_datapath
 // Purpose: control data transceivers and 0xFF filler driver.
+// Walkthrough:
+//   - Qualify current cycle with /IORQ to get io_cycle.
+//   - win_valid marks mapped I/O; unmapped cycles drive the 0xFF filler on reads.
+//   - data_oe_n gates transceivers, data_dir selects direction, io_r_w_ hands
+//     the CPU read/write intent to tiles during active cycles.
 module addr_decoder_datapath (
     input  logic iorq_n,
     input  logic is_read,
@@ -12,12 +17,13 @@ module addr_decoder_datapath (
     output logic io_r_w_
 );
 
-    logic io_cycle;
-    logic mapped_io;
-    logic unmapped_io;
-    logic mapped_read;
-    logic mapped_write;
-    logic unmapped_read;
+    // Cycle qualifiers
+    logic io_cycle;      // 1 when /IORQ is asserted
+    logic mapped_io;     // 1 when I/O cycle hits a configured window
+    logic unmapped_io;   // 1 when I/O cycle misses all windows
+    logic mapped_read;   // mapped and read direction
+    logic mapped_write;  // mapped and write direction
+    logic unmapped_read; // unmapped read (used to gate filler driver)
 
     assign io_cycle     = ~iorq_n;
     assign mapped_io    = io_cycle & win_valid;

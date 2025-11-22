@@ -1,5 +1,11 @@
 // Submodule: addr_decoder_fsm
 // Purpose: /READY handshake and /CS generation with per-slot ready sync.
+// Walkthrough:
+//   - Synchronizes dev_ready_n into clk domain (two flops).
+//   - IDLE: waits for a qualified window hit (win_valid=1, /IORQ low); latches
+//     sel_slot into active_slot, asserts corresponding cs, drives ready_n low.
+//   - ACTIVE: holds cs for active_slot while /IORQ is low; ready_n reflects
+//     dev_ready_sync[active_slot]; deasserts cs and returns to IDLE when /IORQ rises.
 module addr_decoder_fsm #(
     parameter integer NUM_SLOTS = 5
 )(
@@ -16,9 +22,9 @@ module addr_decoder_fsm #(
     output logic                  ready_n
 );
 
-    // Synchronizer for dev_ready_n
-    logic [NUM_SLOTS-1:0] dev_ready_meta;
-    logic [NUM_SLOTS-1:0] dev_ready_sync;
+    // Synchronizer for dev_ready_n into clk domain
+    logic [NUM_SLOTS-1:0] dev_ready_meta; // stage 1
+    logic [NUM_SLOTS-1:0] dev_ready_sync; // stage 2, used internally
 
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -30,13 +36,13 @@ module addr_decoder_fsm #(
         end
     end
 
-    localparam logic S_IDLE   = 1'b0;
-    localparam logic S_ACTIVE = 1'b1;
+    localparam logic S_IDLE   = 1'b0; // waiting for /IORQ hit
+    localparam logic S_ACTIVE = 1'b1; // servicing an active /IORQ
 
-    logic       state;
-    logic [2:0] active_slot;
+    logic       state;       // FSM state
+    logic [2:0] active_slot; // latched slot during ACTIVE
 
-    // Guarded ready selection
+    // Guarded ready selection (default ready when out of range)
     wire sel_dev_ready_n = (active_slot < NUM_SLOTS) ? dev_ready_sync[active_slot] : 1'b1;
 
     function [NUM_SLOTS-1:0] slot_to_cs(input logic [2:0] slot_sel);

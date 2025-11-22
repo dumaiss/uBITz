@@ -1,5 +1,11 @@
 // Submodule: addr_decoder_match
 // Purpose: window match, priority select, and slot selection.
+// Walkthrough:
+//   - Unpacks flattened BASE/MASK/SLOT/OP tables into arrays.
+//   - For each window: compute masked address equality, apply OP gating
+//     (any/read-only/write-only), and qualify with /IORQ low to form win_active.
+//   - Priority encoder picks the lowest-index active window; sel_slot maps that
+//     window to its configured slot value.
 module addr_decoder_match #(
     parameter integer ADDR_W      = 32,
     parameter integer NUM_WIN     = 16,
@@ -22,17 +28,19 @@ module addr_decoder_match #(
     output logic [2:0]             sel_slot
 );
 
-    logic [ADDR_W-1:0] base [0:NUM_WIN-1];
-    logic [ADDR_W-1:0] mask [0:NUM_WIN-1];
-    logic [2:0]        slot [0:NUM_WIN-1];
-    logic [7:0]        op   [0:NUM_WIN-1];
+    // Unpacked config entries per window
+    logic [ADDR_W-1:0] base [0:NUM_WIN-1]; // BASE register
+    logic [ADDR_W-1:0] mask [0:NUM_WIN-1]; // MASK register
+    logic [2:0]        slot [0:NUM_WIN-1]; // SLOT selection
+    logic [7:0]        op   [0:NUM_WIN-1]; // OP gating
 
-    logic [ADDR_W-1:0] masked_equal [0:NUM_WIN-1];
-    logic [ADDR_W-1:0] bit_match    [0:NUM_WIN-1];
-    logic [NUM_WIN-1:0] op_ok;
-    logic [NUM_WIN-1:0] raw_hit;
-    logic [NUM_WIN-1:0] hit;
-    logic [NUM_WIN-1:0] win_active;
+    // Per-window match helpers
+    logic [ADDR_W-1:0] masked_equal [0:NUM_WIN-1]; // ~(addr ^ base)
+    logic [ADDR_W-1:0] bit_match    [0:NUM_WIN-1]; // (~mask) | masked_equal
+    logic [NUM_WIN-1:0] op_ok;                     // OP gating satisfied
+    logic [NUM_WIN-1:0] raw_hit;                   // address match (unqualified)
+    logic [NUM_WIN-1:0] hit;                       // address + op gating
+    logic [NUM_WIN-1:0] win_active;                // hit qualified by /IORQ low
 
     // Unpack flattened config tables
     generate
