@@ -10,6 +10,10 @@ module addr_decoder_tb_32bit;
 
     reg  [4:0]  dev_ready_n;    // active-low per-slot ready
 
+    reg         irq_int_active;
+    reg  [2:0]  irq_int_slot;
+    reg         irq_vec_cycle;
+
     reg         cfg_clk;
     reg         cfg_we;
     reg  [7:0]  cfg_addr;
@@ -43,6 +47,9 @@ module addr_decoder_tb_32bit;
         .clk        (clk),
         .rst_n      (rst_n),
         .r_w_       (r_w_),
+        .irq_int_active(irq_int_active),
+        .irq_int_slot(irq_int_slot),
+        .irq_vec_cycle(irq_vec_cycle),
         .dev_ready_n(dev_ready_n),
         .cfg_clk    (cfg_clk),
         .cfg_we     (cfg_we),
@@ -80,6 +87,9 @@ module addr_decoder_tb_32bit;
         cfg_addr    = 8'd0;
         cfg_wdata   = 8'd0;
         dev_ready_n = 5'b11111; // all devices ready by default
+        irq_int_active = 1'b0;
+        irq_int_slot   = 3'd0;
+        irq_vec_cycle  = 1'b0;
         #100;
         rst_n = 1'b1;
     end

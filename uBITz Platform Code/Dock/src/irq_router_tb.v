@@ -6,6 +6,7 @@ module irq_router_tb;
     localparam int NUM_CPU_INT     = 2;
     localparam int NUM_CPU_NMI     = 1;
     localparam int NUM_TILE_INT_CH = 2;
+    localparam int SLOT_IDX_WIDTH  = (NUM_SLOTS <= 1) ? 1 : $clog2(NUM_SLOTS);
 
     logic clk, rst_n;
     logic [NUM_SLOTS*NUM_TILE_INT_CH-1:0] tile_int_req;
@@ -14,6 +15,8 @@ module irq_router_tb;
     logic [NUM_CPU_INT-1:0]               cpu_int;
     logic [NUM_CPU_NMI-1:0]               cpu_nmi;
     logic [NUM_SLOTS-1:0]                 slot_ack;
+    logic                                 irq_int_active;
+    logic [SLOT_IDX_WIDTH-1:0]            irq_int_slot;
     logic                                 cfg_wr_en, cfg_rd_en;
     logic [7:0]                           cfg_addr;
     logic [31:0]                          cfg_wdata, cfg_rdata;
@@ -35,6 +38,8 @@ module irq_router_tb;
         .cpu_int    (cpu_int),
         .cpu_nmi    (cpu_nmi),
         .slot_ack   (slot_ack),
+        .irq_int_active(irq_int_active),
+        .irq_int_slot(irq_int_slot),
         .cfg_wr_en  (cfg_wr_en),
         .cfg_rd_en  (cfg_rd_en),
         .cfg_addr   (cfg_addr),

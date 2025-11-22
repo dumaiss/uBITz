@@ -35,6 +35,10 @@ module irq_router #(
     // Dock -> Tile per-slot acknowledge outputs (internal active-high)
     output reg  [NUM_SLOTS-1:0]         slot_ack,  // 1-clock pulse, per slot
 
+    // Export active INT source
+    output wire                        irq_int_active,
+    output wire [SLOT_IDX_WIDTH-1:0]   irq_int_slot,
+
     // Simple config bus for routing/enable control
     input  wire                         cfg_wr_en,
     input  wire                         cfg_rd_en,
@@ -42,6 +46,9 @@ module irq_router #(
     input  wire [31:0]                  cfg_wdata,
     output reg  [31:0]                  cfg_rdata
 );
+
+    // Width needed to index NUM_SLOTS slots
+    localparam integer SLOT_IDX_WIDTH = (NUM_SLOTS <= 1) ? 1 : $clog2(NUM_SLOTS);
 
     // ------------------------------------------------------------------
     // Routing tables
@@ -59,6 +66,19 @@ module irq_router #(
     reg [7:0]  active_slot;
     reg [7:0]  active_ch;       // channel for maskable; 0 for NMI
     reg [7:0]  active_cpu_idx;  // full route entry (bit7 = enable, [3:0] = index)
+
+    // Derived view: only maskable, routed INTs count as "active" for vectoring
+    wire active_int_routed = active_valid &&
+                             !active_is_nmi &&
+                             active_cpu_idx[7] &&                // route enabled
+                             (active_slot < NUM_SLOTS);
+
+    assign irq_int_active = active_int_routed;
+
+    // When no active INT, drive slot index to 0; consumers should ignore it if irq_int_active=0.
+    assign irq_int_slot = active_int_routed
+                          ? active_slot[SLOT_IDX_WIDTH-1:0]
+                          : {SLOT_IDX_WIDTH{1'b0}};
 
     // Pending sets
     reg [NUM_SLOTS*NUM_TILE_INT_CH-1:0] pending_int;

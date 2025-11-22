@@ -25,6 +25,9 @@ module addr_decoder_tb;
     wire       data_dir;
     wire       ff_oe_n;
     reg  [4:0] dev_ready_n;
+    reg        irq_int_active;
+    reg  [2:0] irq_int_slot;
+    reg        irq_vec_cycle;
 
     // Simple cfg write helper.
     task cfg_write;
@@ -157,6 +160,9 @@ module addr_decoder_tb;
         .iorq_n(iorq_n),
         .rst_n(rst_n),
         .r_w_(r_w_),
+        .irq_int_active(irq_int_active),
+        .irq_int_slot(irq_int_slot),
+        .irq_vec_cycle(irq_vec_cycle),
         .cfg_clk(cfg_clk),
         .cfg_we(cfg_we),
         .cfg_addr(cfg_addr),
@@ -183,6 +189,9 @@ module addr_decoder_tb;
         rst_n    = 1'b0;
         r_w_     = 1'b1; // default to read
         dev_ready_n = 5'b11111; // default: all devices ready
+        irq_int_active = 1'b0;
+        irq_int_slot   = 3'd0;
+        irq_vec_cycle  = 1'b0;
 
         // Default programmed windows via config bus.
         cfg_write(6'h00, 8'h10); cfg_write(6'h04, 8'hF0); cfg_write(6'h08, {5'b00000, 3'd1}); // slot_0 => cs[1]

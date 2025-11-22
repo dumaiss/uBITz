@@ -9,6 +9,9 @@ module tb_addr_decoder;
     reg        r_w_;
 
     reg  [4:0] dev_ready_n;
+    reg        irq_int_active;
+    reg  [2:0] irq_int_slot;
+    reg        irq_vec_cycle;
 
     reg        cfg_clk;
     reg        cfg_we;
@@ -38,6 +41,9 @@ module tb_addr_decoder;
         .clk(clk),
         .rst_n(rst_n),
         .r_w_(r_w_),
+        .irq_int_active(irq_int_active),
+        .irq_int_slot(irq_int_slot),
+        .irq_vec_cycle(irq_vec_cycle),
         .dev_ready_n(dev_ready_n),
         .cfg_clk(cfg_clk),
         .cfg_we(cfg_we),
@@ -75,6 +81,9 @@ module tb_addr_decoder;
         cfg_addr    = 6'd0;
         cfg_wdata   = 8'd0;
         dev_ready_n = 5'b11111;
+        irq_int_active = 1'b0;
+        irq_int_slot   = 3'd0;
+        irq_vec_cycle  = 1'b0;
         #50;
         rst_n = 1'b1;
     end

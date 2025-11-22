@@ -33,6 +33,11 @@ module addr_decoder #(
     // Per-slot device ready signals (active-low: 0 = busy, 1 = ready)
     input  [NUM_SLOTS-1:0] dev_ready_n,
 
+    // From irq_router / interrupt front-end
+    input               irq_int_active,      // 1 = a maskable INT is currently active
+    input  [SLOT_IDX_WIDTH-1:0] irq_int_slot, // slot index for that active INT
+    input               irq_vec_cycle,      // 1 = this I/O cycle is the Mode-2 vector read
+
     input               cfg_clk,
     input               cfg_we,
     input  [7:0]        cfg_addr,
@@ -53,6 +58,8 @@ module addr_decoder #(
 );
 
     localparam integer WIN_INDEX_W = 4; // supports NUM_WIN <= 16
+    // Width needed to index NUM_SLOTS slots (matches irq_router)
+    localparam integer SLOT_IDX_WIDTH = (NUM_SLOTS <= 1) ? 1 : $clog2(NUM_SLOTS);
 
     // Flattened config tables for module interconnect
     logic [NUM_WIN*ADDR_W-1:0] base_flat;
@@ -69,6 +76,10 @@ module addr_decoder #(
     logic [WIN_INDEX_W-1:0] win_index_sig;
     logic [2:0]            sel_slot_sig;
     logic                  win_valid_sig;
+    // Slot actually used for /CS generation (may be overridden for vector reads)
+    logic [2:0]            sel_slot_mux;
+    // Muxed view for FSM/datapath (may be overridden during vector cycles)
+    logic                  win_valid_mux;
 
     // Ready signal from FSM
     logic ready_n_sig;
@@ -109,14 +120,38 @@ module addr_decoder #(
         .sel_slot  (sel_slot_sig)
     );
 
+    // -----------------------------------------------------------------
+    // Slot selection + win_valid override for Mode-2 vector read cycles
+    // -----------------------------------------------------------------
+    always_comb begin
+        // Defaults: use decoded values from the match logic
+        sel_slot_mux  = sel_slot_sig;
+        win_valid_mux = win_valid_sig;
+
+        // If this cycle has been tagged as the Mode-2 vector read
+        // *and* there is an active maskable INT, override the slot
+        // with the one reported by irq_router.
+        //
+        // NOTE:
+        //  - This module does not decide when irq_vec_cycle is 1.
+        //    That is the CPU/host's responsibility.
+        //  - If irq_vec_cycle=1 but irq_int_active=0, we leave the decoded slot in place.
+        if (irq_vec_cycle && irq_int_active) begin
+            if (irq_int_slot < NUM_SLOTS) begin
+                sel_slot_mux  = {{(3-SLOT_IDX_WIDTH){1'b0}}, irq_int_slot};
+                win_valid_mux = 1'b1;
+            end
+        end
+    end
+
     addr_decoder_fsm #(
         .NUM_SLOTS(NUM_SLOTS)
     ) u_fsm (
         .clk         (clk),
         .rst_n       (rst_n),
         .iorq_n      (iorq_n),
-        .win_valid   (win_valid_sig),
-        .sel_slot    (sel_slot_sig),
+        .win_valid   (win_valid_mux),
+        .sel_slot    (sel_slot_mux),
         .dev_ready_n (dev_ready_n),
         .cs          (cs),
         .ready_n     (ready_n_sig)
@@ -126,7 +161,7 @@ module addr_decoder #(
         .iorq_n    (iorq_n),
         .is_read   (is_read_sig),
         .is_write  (is_write_sig),
-        .win_valid (win_valid_sig),
+        .win_valid (win_valid_mux),
         .data_oe_n (data_oe_n),
         .data_dir  (data_dir),
         .ff_oe_n   (ff_oe_n),
@@ -140,9 +175,9 @@ module addr_decoder #(
 
     always_comb begin
         ready_n  = ready_n_sig;
-        win_valid = win_valid_sig;
+        win_valid = win_valid_mux;
         win_index = win_index_sig;
-        sel_slot  = sel_slot_sig;
+        sel_slot  = sel_slot_mux;
     end
 
 endmodule

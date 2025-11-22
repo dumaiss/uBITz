@@ -90,3 +90,10 @@ set_io io_r_w_    A11
 set_io data_oe_n C10
 set_io data_dir  G11
 set_io ff_oe_n   A10
+
+# Interrupt vector steering inputs
+set_io irq_int_active A1
+set_io irq_int_slot[0] C11
+set_io irq_int_slot[1] C14
+set_io irq_int_slot[2] D10
+set_io irq_vec_cycle D11
