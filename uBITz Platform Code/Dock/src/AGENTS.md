@@ -32,3 +32,4 @@
 ## Commit & Pull Request Guidelines
 - No existing history here; use a concise convention like `<type>: <summary>` (e.g., `feat: add debounce for inputs`).
 - In PRs, describe behavior changes, list commands/tests run (`apio build`, `apio upload`, sims), and note hardware verification (e.g., “verified on Alchitry Cu”). Include updated pin mappings if constraints change.
+- Keep the markdown docs in this directory (`README.md`, `Test Suite.md`, `Mode-2-Interrupt-Test.md`) in sync with code changes; update them whenever behavior, build steps, or test plans shift.
