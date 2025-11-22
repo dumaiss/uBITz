@@ -177,3 +177,36 @@ These tests collectively verify:
 - Proper export of the active interrupt source from `irq_router`.
 - Correct override of slot selection during Mode-2 vector reads.
 - No override when no active interrupt is present.
+---
+## Test D — Vector Read to Unmapped Address
+
+**Goal:** When a maskable interrupt is active and the vector read targets an 
+unmapped address, the decoder must still assert /CS to the interrupting slot.
+
+### Setup
+
+1. Reconfigure all windows to NOT match address 0x0000_0000:
+   - Each window maps a distinct high address range (e.g., 0x1000_0000 + offset)
+   - Use exact-match masks (0xFFFF_FFFF)
+
+2. Configure `irq_router` so that:
+   - Slot 2, channel 0 is routed to a CPU INT pin
+
+3. Assert a maskable interrupt from slot 2:
+   - Set `tile_int_req[int_idx(2, 0)] = 1`
+   - Verify `irq_int_active = 1` and `irq_int_slot = 2`
+
+### Action
+
+- Perform an I/O read cycle with `irq_vec_cycle = 1` at address 0x0000_0000
+- This address does NOT match any configured window
+- Sample `cs_n` and `sel_slot`
+
+### Expected Result
+
+- `cs_n` has slot 2 asserted active-low (the active interrupt slot)
+- `sel_slot` equals 2
+
+The override logic must force `win_valid = 1` and route to the interrupting 
+slot even when the address is unmapped. Without this behavior, the vector 
+read would return 0xFF instead of the device's vector index.
