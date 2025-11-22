@@ -9,6 +9,21 @@
 //   • Drive a constant 0xFF value onto the Host data bus for unmapped
 //     I/O read cycles (via FF_OE_N).
 //
+// Walkthrough:
+//   1) addr_decoder_cfg flattens BASE/MASK/SLOT/OP config regs into
+//      wide buses (base_flat/mask_flat/slot_flat/op_flat).
+//   2) addr_decoder_match compares addr/r_w_/iorq_n against those tables,
+//      producing decoded hit info: is_read_sig/is_write_sig, win_valid_sig,
+//      win_index_sig, and sel_slot_sig.
+//   3) A small mux can override sel_slot and win_valid during a Mode-2
+//      vector fetch (irq_vec_cycle + irq_int_active), steering /CS to the
+//      active interrupt slot even if the address is otherwise unmapped.
+//   4) addr_decoder_fsm consumes win_valid_mux/sel_slot_mux with dev_ready_n
+//      to generate per-slot cs signals and the ready_n handshake.
+//   5) addr_decoder_datapath uses win_valid_mux/is_read_sig/is_write_sig to
+//      drive transceiver enables (data_oe_n/data_dir) and the 0xFF filler
+//      driver (ff_oe_n), plus a qualified io_r_w_.
+//
 // Notes:
 //   - DATA bus itself does NOT pass through this module; only the
 //     control signals for external transceivers are generated here.
@@ -61,28 +76,28 @@ module addr_decoder #(
     // Width needed to index NUM_SLOTS slots (matches irq_router)
     localparam integer SLOT_IDX_WIDTH = (NUM_SLOTS <= 1) ? 1 : $clog2(NUM_SLOTS);
 
-    // Flattened config tables for module interconnect
-    logic [NUM_WIN*ADDR_W-1:0] base_flat;
-    logic [NUM_WIN*ADDR_W-1:0] mask_flat;
-    logic [NUM_WIN*3-1:0]      slot_flat;
-    logic [NUM_WIN*8-1:0]      op_flat;
+    // Flattened config tables for module interconnect (from addr_decoder_cfg)
+    logic [NUM_WIN*ADDR_W-1:0] base_flat; // concatenated BASE registers
+    logic [NUM_WIN*ADDR_W-1:0] mask_flat; // concatenated MASK registers
+    logic [NUM_WIN*3-1:0]      slot_flat; // concatenated SLOT selects
+    logic [NUM_WIN*8-1:0]      op_flat;   // concatenated OP gating fields
 
-    // Handshake / CS
+    // Handshake / CS (active-high internal view)
     logic [NUM_SLOTS-1:0] cs;
 
-    // Match outputs
-    logic                  is_read_sig;
-    logic                  is_write_sig;
-    logic [WIN_INDEX_W-1:0] win_index_sig;
-    logic [2:0]            sel_slot_sig;
-    logic                  win_valid_sig;
+    // Match outputs (raw decode from addr_decoder_match)
+    logic                  is_read_sig;      // 1 when current cycle is a read
+    logic                  is_write_sig;     // 1 when current cycle is a write
+    logic [WIN_INDEX_W-1:0] win_index_sig;   // index of matched window
+    logic [2:0]            sel_slot_sig;     // slot chosen by window match
+    logic                  win_valid_sig;    // decode hit (qualified by /IORQ)
     // Slot actually used for /CS generation (may be overridden for vector reads)
-    logic [2:0]            sel_slot_mux;
+    logic [2:0]            sel_slot_mux;     // final slot after vector override
     // Muxed view for FSM/datapath (may be overridden during vector cycles)
-    logic                  win_valid_mux;
+    logic                  win_valid_mux;    // final win_valid after override
 
     // Ready signal from FSM
-    logic ready_n_sig;
+    logic ready_n_sig; // internal ready_n before output mapping
 
     // -----------------------------------------------------------------
     // Submodules
