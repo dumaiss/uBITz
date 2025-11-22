@@ -1,15 +1,20 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `addr_decoder.v` is the current top-level module; `addr_decoder_tb.v` provides the simulation testbench; `apio.ini` sets `board = Alchitry-Cu` and `top-module = addr_decoder`.
-- Keep new Verilog modules alongside `addr_decoder.v`; update `apio.ini` if the top module changes and add matching constraints.
-- Pin mappings live in `addr_decoder.pcf`; add `set_io` entries there when introducing signals.
+- Top module: `addr_decoder.v` (Dock address decoder/bus arbiter with Mode-2 vector steering).
+- Supporting modules: `addr_decoder_cfg.v`, `addr_decoder_match.v`, `addr_decoder_fsm.v`, `addr_decoder_datapath.v`, `irq_router.v`.
+- Testbenches live in this directory (e.g., `addr_decoder_tb.v`, `addr_decoder_complex_tb.v`, `addr_decoder_worked_example_tb.v`, `irq_router_tb.v`). Keep new benches near their targets and name them `<module>_tb.v`.
+- Pin constraints: `addr_decoder.pcf` (HX8K cb132). Add/update `set_io` entries when interfaces change.
+- Build scripts: `CMakeLists.txt` drives yosys/nextpnr/icepack; `util_report.sh` summarizes utilization from `hardware.rpt`.
+- Legacy/unused modules have been pruned; avoid reintroducing `addr_decoder_irq.v`.
 
-## Build, Flash, and Run
-- `apio clean` — remove previous build artifacts.
-- `apio build` — synthesize, place, and route the design for the configured board.
-- `apio upload` — flash the generated bitstream to the Alchitry Cu.
-- Run commands from the repo root; ensure Apio toolchain dependencies (yosys/nextpnr/arachne) are installed via `apio install`.
+## Build, Flash, and Run (CMake flow)
+- From `uBITz Platform Code/Dock/src`:
+  - Configure once: `cmake -S . -B build`
+  - Build: `cmake --build build` (runs yosys → nextpnr-ice40 → icepack; outputs in `build/`).
+  - Utilization: `./util_report.sh build/hardware.rpt` (JSON summary).
+- Toolchain: yosys/nextpnr-ice40/icepack must be available (OSS CAD Suite via Apio works).
+- If you need Apio instead, add/update `apio.ini` with `board = Alchitry-Cu` and `top-module = addr_decoder`, then use `apio clean/build/upload`. The repo currently uses CMake by default.
 
 ## Coding Style & Naming Conventions
 - Use 4-space indentation; prefer one signal declaration per line.
@@ -17,9 +22,12 @@
 - Favor simple continuous assigns (`assign signal = ...;`) and minimal inline `//` comments that clarify hardware intent.
 
 ## Testing Guidelines
-- From `uBITz Platform Code/Dock/src`, run `iverilog -g2012 -s addr_decoder_tb -o sim.out addr_decoder.v addr_decoder_tb.v` then `vvp sim.out` (prints `All addr_decoder tests passed.` and emits `addr_decoder_tb.vcd`). If your shell cannot see a system `iverilog`, use the vendored toolchain at `../../../iverilog-local/bin/iverilog` and `../../../iverilog-local/bin/vvp`.
-- `addr_decoder_tb` writes `addr_decoder_tb.vcd` for waveform viewing in GTKWave.
-- Add new tests or benches near the module they target; name them `<module>_tb.v`.
+- Quick regression (from `uBITz Platform Code/Dock/src`):
+  - `iverilog -g2012 -s addr_decoder_tb -o sim.out addr_decoder.v addr_decoder_cfg.v addr_decoder_match.v addr_decoder_fsm.v addr_decoder_datapath.v irq_router.v addr_decoder_tb.v` then `vvp sim.out` (expects “All addr_decoder tests passed.”).
+  - For integration vector tests: `iverilog -g2012 -s addr_decoder_irq_vec_tb -o irq_vec_sim.out addr_decoder.v addr_decoder_cfg.v addr_decoder_match.v addr_decoder_fsm.v addr_decoder_datapath.v irq_router.v addr_decoder_irq_vec_tb.v` then `vvp irq_vec_sim.out`.
+  - If `iverilog` is not on PATH, use the vendored tools at `../../../iverilog-local/bin/iverilog` and `../../../iverilog-local/bin/vvp`.
+- Waveforms: benches write `*.vcd` for GTKWave.
+- Add new benches alongside their target module.
 
 ## Commit & Pull Request Guidelines
 - No existing history here; use a concise convention like `<type>: <summary>` (e.g., `feat: add debounce for inputs`).
