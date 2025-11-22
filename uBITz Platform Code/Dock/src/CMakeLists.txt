@@ -10,7 +10,6 @@ set(ADDRDECODE_SRCS
     ${CMAKE_SOURCE_DIR}/addr_decoder_match.v
     ${CMAKE_SOURCE_DIR}/addr_decoder_fsm.v
     ${CMAKE_SOURCE_DIR}/addr_decoder_datapath.v
-    ${CMAKE_SOURCE_DIR}/addr_decoder_irq.v
     ${CMAKE_SOURCE_DIR}/irq_router.v
 )
 
