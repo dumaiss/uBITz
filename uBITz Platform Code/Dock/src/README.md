@@ -15,6 +15,12 @@ and two related interrupt-routing blocks:
 Testbenches (e.g. `addr_decoder_tb.v`, `irq_router_tb.v`, `addr_decoder_complex_tb.v`)
 exercise these modules but are not described in detail here.
 
+Additional documentation in this directory:
+
+- `DECODER_CONFIGURATION.md` – how the Dock MCU programs the CPLD window tables and interrupt routing (config buses, address maps, and register layout).
+- `SIGNALS.md` – mapping between CPLD ports and the platform logical signal set (CPU/Dock/Device pins and their roles).
+- `Test Suite.md` – structured description of all `*_tb.v` testbenches, including scenarios, expected behaviour, and pass/fail criteria.
+
 For detailed behavioural tests and expected timing for Mode‑2 vector cycles
 across `addr_decoder` and `irq_router`, see `Mode-2-Interrupt-Test.md` in this
 directory. For the normative Dock‑level behaviour and how the HDL maps onto the
