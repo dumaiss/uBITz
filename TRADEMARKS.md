@@ -1,6 +1,6 @@
 # μBITz / microBITz Trademarks Policy
 
-**Short version:** The names **“μBITz”**, **“microBITz”**, **“uBITz”** and the μBITz logos are trademarks of <Owner/Org Name>.  
+**Short version:** The names **“μBITz”**, **“microBITz”**, **“uBITz”** and the μBITz logos are trademarks of Sebastien Dumais.  
 You may say **“Compatible with μBITz”** if your product follows the public specs.  
 Don’t use our names/logos as your product or company name, and don’t alter the logos.
 
@@ -11,7 +11,7 @@ Don’t use our names/logos as your product or company name, and don’t alter t
 - Logos/wordmarks: the **μBITz** pixel logo, the **microBITz** logotype, and any official “Compatible with μBITz” badges
 
 ## 2) Ownership
-The μBITz marks are trademarks of <Owner/Org Name>. Use of our software/hardware under the **Solderpad Hardware License v2.1 (SPDX: SHL-2.1)** does **not** grant trademark rights.
+The μBITz marks are trademarks of Sebastien dUmais. Use of our software/hardware under the **Solderpad Hardware License v2.1 (SPDX: SHL-2.1)** does **not** grant trademark rights.
 
 ## 3) Acceptable use (you may)
 - **Nominative use:** Refer to our project in text (“This board is compatible with μBITz.”) when it’s necessary and truthful.
@@ -38,11 +38,11 @@ The μBITz marks are trademarks of <Owner/Org Name>. Use of our software/hardwar
 
 ## 6) “Compatible with μBITz” badge
 You may use the badge if:
-- Your product passes the **μBITz Specification** for the relevant profile (Lite/Serial/Parallel/Pro) and does **not** damage or misconfigure host systems.
+- Your product passes the **μBITz Specification** for the relevant profile (Serial/Parallel/Minimal) and does **not** damage or misconfigure host systems.
 - You provide a link to your public documentation or test evidence on request.
 
 **Badge text:** `Compatible with μBITz`  
-**Attribution (recommended small print):** `μBITz is a trademark of <Owner/Org Name>. Used with permission.`
+**Attribution (recommended small print):** `μBITz is a trademark of Sebastien Dumais. Used with permission.`
 
 ### Optional SVG badge (you can copy as `branding/badges/compatible-ubitz.svg`)
 ```svg
