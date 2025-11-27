@@ -14,11 +14,11 @@ Each diary entry captures:
 
 Diaries are stored as one file per day:
 
-- `YYYY-MM-DD-EngineeringDiary.md`
+- `YYYY-MMM-DD-EngineeringDiary.md`
 
 Example:
 
-- `2025-11-26-EngineeringDiary.md`
+- `2025-NOV-26-EngineeringDiary.md`
 
 This keeps entries sortable by date and easy to grep.
 
