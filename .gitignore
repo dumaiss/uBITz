@@ -18,3 +18,6 @@ uBITz Platform Code/Dock/src/build/
 # Dock/src generated artifacts (generalized)
 uBITz Platform Code/Dock/src/*.out
 uBITz Platform Code/Dock/src/*.vcd
+/uBITz Platform Code/Dock/MCU/includes
+/uBITz Platform Code/Dock/MCU/build
+uBITz Platform Code/Dock/Schem/uBITz-Dock-Reference-Impl/~uBITz-Dock-Reference-Impl.kicad_sch.lck
