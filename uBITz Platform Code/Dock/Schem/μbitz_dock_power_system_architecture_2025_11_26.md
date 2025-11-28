@@ -113,7 +113,7 @@ Derived rails inside the Dock:
 The Dock power system is sized so that a single USB-C PD source can supply a fully populated μBITz stack (Host, Bank, and four Tiles) with margin. Exact numbers depend on the specific Host/Bank/Tile implementations; the table below is therefore **illustrative** and MUST be refined once concrete boards exist.
 
 |Subsystem|Example @ 5 V|Example @ 3.3 V|Notes|
-|---|--:|--:|---|
+|---|---|---|---|
 |Host CPU card|~0.5 A|~0.3 A|Retro CPU + glue + local peripherals|
 |Bank memory card|~0.3 A|~0.2 A|SRAM / DRAM, address decode, etc.|
 |Tile (per slot)|~0.3 A|~0.2 A|Worst-case “heavy” Tile (VDP, sound, etc.)|
@@ -948,47 +948,139 @@ This architecture should be stable, builder-friendly, and adaptable as a reusabl
 
 > First-pass, implementation-oriented BOM for the Dock power system. Values and exact part numbers are indicative and should be tuned once current budgets and board constraints are finalized.
 
-|Block / Ref|Function|Suggested Part|Key Specs / Rationale|Notes / Alternatives|
-|---|---|---|---|---|
-|**USB-C PD Input**|||||
-|J1|USB-C PD power-only receptacle|Generic 24-pin USB-C receptacle, e.g. Amphenol / GCT mid- or top-mount|Full-feature Type‑C pinout; supports CC pins and VBUS up to 20 V|Pick footprint family you’re comfortable assembling; through-hole shell preferred for robustness|
-|U1|USB-C PD sink controller|**STUSB4500QTR**|Standalone USB‑C PD sink, configurable PDOs up to 20 V / 5 A, dead-battery support|Well-documented, lots of hobbyist examples; NVM-configured, MCU can optionally tweak over I²C|
-|F1|PD input protection (resettable fuse)|USB‑C‑rated PPTC (e.g. Littelfuse 20 V profile, ~3 A hold)|Protects against sustained shorts on VBUS_PD_RAW; sized for chosen PD contract (e.g. 20 V / 3 A)|Could be replaced by a high-voltage eFuse if you want tighter control|
-|D1|PD VBUS TVS|24–30 V unidirectional TVS in SMB/SMF|Clamps hot-plug and surge spikes on VBUS_PD_RAW|Choose standoff > 22 V, low clamping; place close to connector|
-|ESD1|USB-C data/CC ESD array|4–6 channel low‑cap USB‑C ESD array|Protects CC1/CC2, D+/D–, SBU pins|Any USB‑C‑rated ESD array you like; follow layout in datasheet|
-|**Service USB Input**|||||
-|J2|Service USB connector|USB‑C or micro‑B receptacle (data+power)|Connects Dock MCU to host PC|Using a different physical connector than J1 may avoid user confusion|
-|F2|Service USB VBUS PPTC|PPTC ~0.75–1.1 A hold, 5 V|Limits current drawn from PC’s USB port|Simple resettable fuse is fine here|
-|D2|Service USB TVS|5 V USB TVS|Protects VBUS_PC_RAW from ESD / surges|Use a part optimised for 5 V USB|
-|ESD2|USB data ESD array|2–4 ch USB2.0 ESD array|Protects D+/D– on service port|Standard USB2 protection footprint|
-|**Mechanical Switches / UI**|||||
-|SW1|Master power switch (DPST)|Panel‑mount toggle or rocker, DPST, ≥5 A @ 30 VDC|Cuts both VBUS_PD_PROT and VBUS_PC_PROT before they enter the Dock|Make it physically obvious: “big fat” main power switch|
-|SW2|PWR button (momentary)|Panel‑mount, NO momentary pushbutton|User soft‑power control (to MCU)|Debounce in firmware; small RC + series R for ESD is plenty|
-|**AON Power Path**|||||
-|U3|PD/PC power mux (AON)|**TPS2121** or similar 2.7–22 V power mux|Ideal-diode OR with priority and current limit; handles PD up to 20 V and a few amps|Massive overkill for AON current but very robust; you can later downsize to a cheaper mux if desired|
-|U4|AON buck regulator|20–36 V in → 3.3 V, ~0.5–1 A, e.g. **LMR33620** configured for 3.3 V|Powers +3V3_AON for MCU, RTC VCC, USB PHY, glue|Any wide‑input synchronous buck in the 1–2 A class is fine; pick what you like from your usual vendor|
-|L4, Cin4, Cout4|AON buck magnetics & caps|Inductor ~4.7–10 µH, low‑ESR ceramics per U4 datasheet|Size for worst‑case Vin (20 V) and AON load|Exact values from chosen buck’s design tool|
-|U5|AON supervisor / POR|3.0–3.1 V SOT‑23 voltage supervisor|Holds Dock MCU in reset until +3V3_AON is good|Any low‑Iq “simple reset” IC with open‑drain / push‑pull output works|
-|**Main Regulators & Rail Protection**|||||
-|U6|5 V main buck|20–36 V in → 5 V, ≥3–4 A, e.g. **LMR60440** configured for 5 V|Main +5V_MAIN rail for backplane and logic|Size for worst‑case fully populated Dock; 3–4 A is a good starting point|
-|L6, Cin6, Cout6|5 V buck magnetics & caps|Inductor ~4.7–10 µH, bulk + ceramic caps|Layout and values per U6 datasheet|Place input caps tight to VIN/GND, good thermal pour|
-|U7|3.3 V main buck|Same family as U6, configured to 3.3 V (or a second LMR33620)|Main +3V3_MAIN rail for backplane and CPLD/FPGA|Reusing same regulator family simplifies layout and BOM|
-|L7, Cin7, Cout7|3.3 V buck magnetics & caps|Similar class to L6/Cin6/Cout6|Sized for expected 3.3 V load|Again, follow regulator datasheet design curves|
-|U8|5 V rail eFuse|**STEF05** (5 V eFuse) or equivalent|Over‑current / over‑voltage protection on +5V_MAIN before backplane|Offers nice fault reporting and controlled restart behaviour|
-|U9|3.3 V rail eFuse|**STEF033** or **STEF4S** (3.3/5 V selectable)|Same protection idea for +3V3_MAIN|The dual‑mode STEF4S lets you stock one part for 3.3 and 5 V if you prefer|
-|F3..Fn|Optional per‑slot PPTCs|Small PPTCs on each slot’s +5V_MAIN (and optionally 3V3)|Limits damage from a single bad Tile|Grouping slots per‑fuse is an acceptable cost/space trade‑off|
-|**RTC & Backup Power**|||||
-|U10|RTC|**PCF8523** or similar I²C RTC with VBAT|Low‑power RTC with dedicated backup battery pin|Widely used, 1.0–5.5 V supply, simple I²C interface|
-|Y1|32.768 kHz crystal|32.768 kHz watch crystal, CL per RTC datasheet|Time base for RTC|Pick a crystal with specified load capacitance that matches PCF8523 settings|
-|B1|Coin cell holder|CR1220/CR2032 PCB holder|Provides VBAT_RTC|Choose size based on desired backup lifetime and mechanical constraints|
-|Rbat / Dbat|Coin‑cell protection|Optional series R or Schottky|Limits inrush / reverse leakage into VBAT_RTC path|Often not strictly required; follow RTC datasheet recommendations|
-|**Logic / Cross-Domain Glue**|||||
-|Rseries_x|MCU→CPLD series resistors|22–68 Ω, 0402/0603|On all MCU GPIOs that drive into CPLD/FPGA domain|Limits back‑power current and tames edges|
-|Rdiv_PD_sense|PD voltage sense divider|2‑resistor divider from VBUS_PD_SYS to MCU ADC|Lets MCU know which PD profile is active / approximate input voltage|Keep input current small (100 kΩ range total)|
-|Rdiv_PC_sense|Service USB presence divider|Simple divider or GPIO sense on VBUS_PC_SYS|Lets MCU detect PC plugged/unplugged|Can share with USB VBUS detect if needed|
-|**Misc & Layout Support**|||||
-|Cbulk_PD|PD input bulk capacitance|47–220 µF electrolytic / polymer + ceramics|Smooths PD VBUS transients and supports buck inrush|Respect PD inrush limits; check STUSB4500 app notes|
-|Cbulk_5V, Cbulk_3V3|Rail bulk caps|47–220 µF per rail near buck outputs|Handles slot hot‑plug / load steps|Exact values tuned after load estimates|
-|GND stitching vias|Thermal / HF stitching|Plenty of vias around TVS, eFuses, bucks, and connectors|Keeps return paths tight and spreads heat|Not a “part”, but critical to make the BOM actually work on FR‑4|
+| Block / Ref                           | Function                              | Suggested Part                                                         | Key Specs / Rationale                                                                            | Notes / Alternatives                                                                                  |
+| ------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| **USB-C PD Input**                    |                                       |                                                                        |                                                                                                  |                                                                                                       |
+| J1                                    | USB-C PD power-only receptacle        | Generic 24-pin USB-C receptacle, e.g. Amphenol / GCT mid- or top-mount | Full-feature Type‑C pinout; supports CC pins and VBUS up to 20 V                                 | Pick footprint family you’re comfortable assembling; through-hole shell preferred for robustness      |
+| U1                                    | USB-C PD sink controller              | **STUSB4500QTR**                                                       | Standalone USB‑C PD sink, configurable PDOs up to 20 V / 5 A, dead-battery support               | Well-documented, lots of hobbyist examples; NVM-configured, MCU can optionally tweak over I²C         |
+| F1                                    | PD input protection (resettable fuse) | USB‑C‑rated PPTC (e.g. Littelfuse 20 V profile, ~3 A hold)             | Protects against sustained shorts on VBUS_PD_RAW; sized for chosen PD contract (e.g. 20 V / 3 A) | Could be replaced by a high-voltage eFuse if you want tighter control                                 |
+| D1                                    | PD VBUS TVS                           | 24–30 V unidirectional TVS in SMB/SMF                                  | Clamps hot-plug and surge spikes on VBUS_PD_RAW                                                  | Choose standoff > 22 V, low clamping; place close to connector                                        |
+| ESD1                                  | USB-C data/CC ESD array               | 4–6 channel low‑cap USB‑C ESD array                                    | Protects CC1/CC2, D+/D–, SBU pins                                                                | Any USB‑C‑rated ESD array you like; follow layout in datasheet                                        |
+| **Service USB Input**                 |                                       |                                                                        |                                                                                                  |                                                                                                       |
+| J2                                    | Service USB connector                 | USB‑C or micro‑B receptacle (data+power)                               | Connects Dock MCU to host PC                                                                     | Using a different physical connector than J1 may avoid user confusion                                 |
+| F2                                    | Service USB VBUS PPTC                 | PPTC ~0.75–1.1 A hold, 5 V                                             | Limits current drawn from PC’s USB port                                                          | Simple resettable fuse is fine here                                                                   |
+| D2                                    | Service USB TVS                       | 5 V USB TVS                                                            | Protects VBUS_PC_RAW from ESD / surges                                                           | Use a part optimised for 5 V USB                                                                      |
+| ESD2                                  | USB data ESD array                    | 2–4 ch USB2.0 ESD array                                                | Protects D+/D– on service port                                                                   | Standard USB2 protection footprint                                                                    |
+| **Mechanical Switches / UI**          |                                       |                                                                        |                                                                                                  |                                                                                                       |
+| SW1                                   | Master power switch (DPST)            | Panel‑mount toggle or rocker, DPST, ≥5 A @ 30 VDC                      | Cuts both VBUS_PD_PROT and VBUS_PC_PROT before they enter the Dock                               | Make it physically obvious: “big fat” main power switch                                               |
+| SW2                                   | PWR button (momentary)                | Panel‑mount, NO momentary pushbutton                                   | User soft‑power control (to MCU)                                                                 | Debounce in firmware; small RC + series R for ESD is plenty                                           |
+| **AON Power Path**                    |                                       |                                                                        |                                                                                                  |                                                                                                       |
+| U3                                    | PD/PC power mux (AON)                 | **TPS2121** or similar 2.7–22 V power mux                              | Ideal-diode OR with priority and current limit; handles PD up to 20 V and a few amps             | Massive overkill for AON current but very robust; you can later downsize to a cheaper mux if desired  |
+| U4                                    | AON buck regulator                    | 20–36 V in → 3.3 V, ~0.5–1 A, e.g. **LMR33620** configured for 3.3 V   | Powers +3V3_AON for MCU, RTC VCC, USB PHY, glue                                                  | Any wide‑input synchronous buck in the 1–2 A class is fine; pick what you like from your usual vendor |
+| L4, Cin4, Cout4                       | AON buck magnetics & caps             | Inductor ~4.7–10 µH, low‑ESR ceramics per U4 datasheet                 | Size for worst‑case Vin (20 V) and AON load                                                      | Exact values from chosen buck’s design tool                                                           |
+| U5                                    | AON supervisor / POR                  | 3.0–3.1 V SOT‑23 voltage supervisor                                    | Holds Dock MCU in reset until +3V3_AON is good                                                   | Any low‑Iq “simple reset” IC with open‑drain / push‑pull output works                                 |
+| **Main Regulators & Rail Protection** |                                       |                                                                        |                                                                                                  |                                                                                                       |
+| U6                                    | 5 V main buck                         | 20–36 V in → 5 V, ≥3–4 A, e.g. **LMR60440** configured for 5 V         | Main +5V_MAIN rail for backplane and logic                                                       | Size for worst‑case fully populated Dock; 3–4 A is a good starting point                              |
+| L6, Cin6, Cout6                       | 5 V buck magnetics & caps             | Inductor ~4.7–10 µH, bulk + ceramic caps                               | Layout and values per U6 datasheet                                                               | Place input caps tight to VIN/GND, good thermal pour                                                  |
+| U7                                    | 3.3 V main buck                       | Same family as U6, configured to 3.3 V (or a second LMR33620)          | Main +3V3_MAIN rail for backplane and CPLD/FPGA                                                  | Reusing same regulator family simplifies layout and BOM                                               |
+| L7, Cin7, Cout7                       | 3.3 V buck magnetics & caps           | Similar class to L6/Cin6/Cout6                                         | Sized for expected 3.3 V load                                                                    | Again, follow regulator datasheet design curves                                                       |
+| U8                                    | 5 V rail eFuse                        | **STEF05** (5 V eFuse) or equivalent                                   | Over‑current / over‑voltage protection on +5V_MAIN before backplane                              | Offers nice fault reporting and controlled restart behaviour                                          |
+| U9                                    | 3.3 V rail eFuse                      | **STEF033** or **STEF4S** (3.3/5 V selectable)                         | Same protection idea for +3V3_MAIN                                                               | The dual‑mode STEF4S lets you stock one part for 3.3 and 5 V if you prefer                            |
+| F3..Fn                                | Optional per‑slot PPTCs               | Small PPTCs on each slot’s +5V_MAIN (and optionally 3V3)               | Limits damage from a single bad Tile                                                             | Grouping slots per‑fuse is an acceptable cost/space trade‑off                                         |
+| **RTC & Backup Power**                |                                       |                                                                        |                                                                                                  |                                                                                                       |
+| B1                                    | Coin cell holder                      | CR1220/CR20                                                            |                                                                                                  |                                                                                                       |
 
-This BOM is intentionally conservative (20 V‑capable parts, 3–4 A main rails, overspec’d mux) so it stays reusable as a general "USB‑C PD power brick" recipe. Once you have rough power numbers for a specific Host+Bank+Tiles combo, regulators and fuses can be resized or swapped for cheaper parts if needed.
+---
+
+## 13. Test and Debug Points (Informative)
+
+To simplify Dock bring-up, fault-finding, and firmware development, the reference design should expose **labelled test points** (pads, loops, or header pins) for key power nodes and control signals. These test points are not part of the backplane contract, but are strongly recommended for any Dock implementation.
+
+### 13.1 Ground references
+
+Provide at least **three robust GND test locations** distributed across the board, for example:
+
+- Near the **PD / power cluster**.
+    
+- Near the **Dock MCU / AON logic**.
+    
+- Near the **backplane connector / slot region**.
+    
+
+These may be test loops, turret posts, or generous pads sized for scope ground clips. All should tie directly into the main GND plane (L2).
+
+### 13.2 Input power nodes
+
+Expose test access to the main PD/PC input nodes so that plug-in behaviour and PD negotiation can be observed:
+
+- **TP_VBUS_PD_RAW** – PD VBUS after connector protection (fuse/TVS).
+    
+- **TP_VBUS_PD_PROT** – PD VBUS at the PD sink input / protected node.
+    
+- **TP_VBUS_PD_SYS** – PD VBUS after the master switch feeding the main/AON paths.
+    
+- **TP_VBUS_PC_SYS** – Service USB VBUS after the master switch.
+    
+
+These test points allow the designer to verify: connector behaviour, PD contract ramp-up, master switch operation, and power-mux input conditions.
+
+### 13.3 Rails
+
+Each regulated rail should have at least one clearly labelled DC test point near the corresponding regulator block:
+
+- **TP_3V3_AON** – output of AON buck.
+    
+- **TP_5V_MAIN** – output of 5 V main buck (preferably after the rail eFuse if used, or both before/after if convenient).
+    
+- **TP_3V3_MAIN** – output of 3.3 V main buck (same comment as above).
+    
+
+On large boards, it is helpful to additionally provide small labelled pads for +5V_MAIN and +3V3_MAIN near the backplane connector, so that actual rail levels at the slot edge can be confirmed without reaching into the power corner.
+
+### 13.4 Control, reset, and status
+
+Key control and status signals involved in soft power and sequencing should be available at small test pads or on a compact bring-up header (e.g., 2×5 0.1" header). Recommended signals include:
+
+- **TP_MAIN_ON_REQ** – MCU’s main-rail enable request.
+    
+- **TP_PG_5V_MAIN**, **TP_PG_3V3_MAIN** – power-good outputs for the main rails.
+    
+- **TP_DOCK_LOGIC_RESET#** – reset line controlling Dock logic (CPLD/FPGA) via the AND gate.
+    
+- **TP_SYS_RESET#** – global reset line to Host/Bank/Tiles.
+    
+- **TP_PD_SENSE** – divided-down PD input voltage (if the sense divider is implemented).
+    
+- **TP_PC_SENSE** – PC/service VBUS presence sense node (if implemented).
+    
+
+A small bring-up header that groups these signals with a nearby GND pin is highly recommended; it allows easy connection of a logic analyzer or an external controller for automated testing.
+
+### 13.5 Physical style and labelling
+
+- Use pad sizes appropriate to the expected use:
+    
+    - Larger pads or test loops for rails and VBUS nodes (to accept mini-grabbers and hooks).
+        
+    - Smaller pads for logic/control signals where fine probes or headers are more practical.
+        
+- Place each rail test point near the corresponding **local GND reference** (e.g., the nearest GND island or via cluster) so that probing rail + GND does not require long ground leads.
+    
+- Clearly label test points in silkscreen (e.g., `TP_5V`, `TP_3V3_AON`, `TP_MAIN_ON`, `TP_SYSRST`) so that builders can quickly locate them without the schematic.
+    
+
+These recommendations are intentionally non-normative: implementers may add more test points as needed, but a Dock that omits them entirely will be significantly harder to debug and bring up.
+
+---
+
+## 14. Power Sheet External Signals (Hierarchical Interface)
+
+For schematic organisation, the Dock power system is intended to live on its own **KiCad hierarchical sheet**. This section treats the power system as a “module” with well-defined inputs and outputs.
+
+Directions below are given **relative to the power sheet** (i.e., “Input” means a net driven from outside into the power sheet; “Output” means a net driven from the power sheet to the rest of the Dock).
+
+|Signal|Direction (w.r.t. power sheet)|Type|Description / Usage|
+|---|---|---|---|
+|**+5V_MAIN**|Output|Power|Main 5 V rail generated by the power sheet and exported to the backplane and any other Dock sheets that need 5 V. Sourced from the 5 V buck and rail protection.|
+|**+3V3_MAIN**|Output|Power|Main 3.3 V rail generated by the power sheet and exported to the backplane and Dock logic (e.g., CPLD/FPGA). Sourced from the 3.3 V buck and rail protection.|
+|**+3V3_AON**|Output|Power|Always-on 3.3 V rail generated by the AON buck. Feeds the Dock MCU, RTC VCC, USB PHY and any other always-on logic on other sheets.|
+|**VBAT_RTC**|Output|Power|Coin-cell backed RTC supply. The coin cell and any protection components live on the power sheet; the RTC IC’s VBAT pin on the logic sheet connects to this net.|
+|**GND**|Bidirectional (global)|Power|System ground reference. Implemented primarily as a solid L2 plane; exposed as a global net and via test points, not usually a single hierarchical pin, but included here for completeness.|
+|**MAIN_ON_REQ**|Input|Digital control|Soft-power enable request from Dock MCU/logic. When asserted, it drives the EN pins of the 5 V and 3.3 V main bucks (directly or via simple gating), turning on +5V_MAIN and +3V3_MAIN.|
+|**PWR_BTN#**|Output|Digital input (to logic)|Debounced/protected net from the front-panel momentary power button. The button and ESD/RC network may reside on the power sheet; the PWR_BTN# net is exported to the MCU/logic sheet as a user input. Active-low by convention.|
+|**PG_5V_MAIN**|Output|Digital status|Power-good indication for +5V_MAIN from the 5 V buck/eFuse. Exported to the MCU/logic sheet so firmware can verify rail health and implement fault policies.|
+|**PG_3V3_MAIN**|Output|Digital status|Power-good indication for +3V3_MAIN from the 3.3 V buck/eFuse. Exported similarly to PG_5V_MAIN.|
+|**PD_SENSE**|Output|Analog sense|Divided-down representation of the PD input voltage (VBUS_PD_SYS) suitable for an MCU ADC pin. Allows firmware to distinguish between 5 V vs 9/12/15/20 V contracts or detect loss of PD input.|
+|**PC_SENSE**|Output|Digital/analog sense|Presence/voltage sense derived from the service USB VBUS (VBUS_PC_SYS). May be a simple digital detect or a divided-down analog level; used by MCU to detect whether a PC is connected.|
+
+Implementers may choose to expose additional signals (e.g., a combined `PWR_GOOD_MAIN` flag or individual rail fault lines) as hierarchical pins if needed. The table above is the **minimal recommended interface** between the Dock power sheet and the rest of the schematic, and should be reflected in the KiCad hierarchical pin definitions for that sheet.
