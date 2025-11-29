@@ -35,7 +35,8 @@
 module addr_decoder #(
     parameter ADDR_W    = 32, // address bus width (up to 32)
     parameter NUM_WIN   = 16, // number of decode windows (up to 16)
-    parameter NUM_SLOTS = 5   // number of chip-select outputs (slots)
+    parameter NUM_SLOTS = 5,  // number of chip-select outputs (slots)
+    parameter integer SLOT_IDX_WIDTH  = (NUM_SLOTS <= 1) ? 1 : $clog2(NUM_SLOTS)
 )(
     input  [ADDR_W-1:0] addr,
     input               iorq_n,
@@ -106,6 +107,7 @@ module addr_decoder #(
         .ADDR_W (ADDR_W),
         .NUM_WIN(NUM_WIN)
     ) u_cfg (
+        .rst_n    (rst_n),
         .cfg_clk   (cfg_clk),
         .cfg_we    (cfg_we),
         .cfg_addr  (cfg_addr),

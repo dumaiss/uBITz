@@ -21,3 +21,19 @@ uBITz Platform Code/Dock/src/*.vcd
 /uBITz Platform Code/Dock/MCU/includes
 /uBITz Platform Code/Dock/MCU/build
 uBITz Platform Code/Dock/Schem/uBITz-Dock-Reference-Impl/~uBITz-Dock-Reference-Impl.kicad_sch.lck
+sim_files.f
+synth_xo2.ys
+top.json
+trivial.v
+top.ys
+abc_tmp/yosys-abc-2vsjaS/abc.script
+abc_tmp/yosys-abc-2vsjaS/input.blif
+abc_tmp/yosys-abc-5ssaRQ/lutdefs.txt
+tmp/ivrlg7e0a
+tmp/ivrlg27e0a
+tmp/ivrlg336b
+tmp/ivrlg2336b
+tmp/ivrlh7e0a
+tmp/ivrlh336b
+tmp/ivrli7e0a
+tmp/ivrli336b

@@ -60,7 +60,6 @@ module top #(
     // Wires bridging irq_router to addr_decoder for Mode-2 steering.
     wire irq_int_active_sig;
     wire [SLOT_IDX_WIDTH-1:0] irq_int_slot_sig;
-    wire [31:0] irq_cfg_wdata_wide = {24'b0, cfg_wdata};
 
     // Shared 8-bit config bus split: low range to addr_decoder, high range to irq_router.
     wire        dec_cfg_we   = cfg_we && (cfg_addr < IRQ_CFG_BASE[7:0]);
@@ -90,7 +89,7 @@ module top #(
         .cfg_wr_en     (irq_cfg_we),
         .cfg_rd_en     (1'b0),
         .cfg_addr      (irq_cfg_addr),
-        .cfg_wdata     (irq_cfg_wdata_wide)
+        .cfg_wdata     (cfg_wdata)
     );
 
     addr_decoder #(

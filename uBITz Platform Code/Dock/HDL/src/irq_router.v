@@ -56,34 +56,35 @@ module irq_router #(
     input  wire                         cfg_wr_en,
     input  wire                         cfg_rd_en,
     input  wire [CFG_ADDR_WIDTH-1:0]    cfg_addr,
-    input  wire [31:0]                  cfg_wdata
+    input  wire [7:0]                   cfg_wdata
 //    output reg  [31:0]                  cfg_rdata
 );
 
     // Width needed to index NUM_SLOTS slots
     //localparam integer SLOT_IDX_WIDTH = (NUM_SLOTS <= 1) ? 1 : $clog2(NUM_SLOTS);
+    localparam integer CH_IDX_WIDTH = (NUM_TILE_INT_CH <= 1) ? 1 : $clog2(NUM_TILE_INT_CH);
 
     // ------------------------------------------------------------------
     // Routing tables
     // ------------------------------------------------------------------
-    // Maskable INT routing: enable + CPU INT index
-    reg [7:0] int_route_slot_ch [0:NUM_SLOTS-1][0:NUM_TILE_INT_CH-1];
-    // NMI routing: enable + CPU NMI index
-    reg [7:0] nmi_route_slot [0:NUM_SLOTS-1];
+    // Maskable INT routing: enable + CPU INT index (bit4 = enable, [3:0] = idx)
+    reg [4:0] int_route_slot_ch [0:NUM_SLOTS-1][0:NUM_TILE_INT_CH-1];
+    // NMI routing: enable + CPU NMI index (bit4 = enable, [3:0] = idx)
+    reg [4:0] nmi_route_slot [0:NUM_SLOTS-1];
 
     // ------------------------------------------------------------------
     // Active interrupt tracking
     // ------------------------------------------------------------------
     reg        active_valid;   // 1 when an interrupt is currently active
     reg        active_is_nmi;  // 1 = NMI, 0 = maskable INT
-    reg [7:0]  active_slot;    // slot owning the active source
-    reg [7:0]  active_ch;      // channel for maskable; 0 for NMI
-    reg [7:0]  active_cpu_idx; // full route entry (bit7 = enable, [3:0] = index)
+    reg [SLOT_IDX_WIDTH-1:0]  active_slot;    // slot owning the active source
+    reg [CH_IDX_WIDTH-1:0]    active_ch;      // channel for maskable; 0 for NMI
+    reg [4:0]  active_cpu_idx; // full route entry (bit4 = enable, [3:0] = index)
 
     // Derived view: only maskable, routed INTs count as "active" for vectoring
     wire active_int_routed = active_valid &&
                              !active_is_nmi &&
-                             active_cpu_idx[7] &&                // route enabled
+                             active_cpu_idx[4] &&                // route enabled
                              (active_slot < NUM_SLOTS);
 
     assign irq_int_active = active_int_routed;
@@ -114,13 +115,12 @@ module irq_router #(
     reg [NUM_SLOTS-1:0]                 pending_nmi_next;
     reg        active_valid_next;
     reg        active_is_nmi_next;
-    reg [7:0]  active_slot_next;
-    reg [7:0]  active_ch_next;
-    reg [7:0]  active_cpu_idx_next;
+    reg [SLOT_IDX_WIDTH-1:0]  active_slot_next;
+    reg [CH_IDX_WIDTH-1:0]    active_ch_next;
+    reg [4:0]  active_cpu_idx_next;
 
     integer s, c;
-    reg [7:0] route_entry;
-    reg       route_en;
+    reg [4:0] route_entry;
 
     always @* begin
         // Default next-state mirrors current
@@ -139,7 +139,7 @@ module irq_router #(
             for (c = 0; c < NUM_TILE_INT_CH; c = c + 1) begin
                 route_entry = int_route_slot_ch[s][c];
 
-                if (route_entry[7]) begin
+                if (route_entry[4]) begin
                     // Routed: follow current line level
                     pending_int_next[int_idx(s,c)] = tile_int_req[int_idx(s,c)];
                 end else begin
@@ -148,7 +148,7 @@ module irq_router #(
                 end
             end
 
-            if (nmi_route_slot[s][7]) begin
+            if (nmi_route_slot[s][4]) begin
                 pending_nmi_next[s] = tile_nmi_req[s];
             end else begin
                 pending_nmi_next[s] = 1'b0;
@@ -173,9 +173,9 @@ module irq_router #(
             // Candidate defaults
             active_valid_next   = 1'b0;
             active_is_nmi_next  = 1'b0;
-            active_slot_next    = 8'd0;
-            active_ch_next      = 8'd0;
-            active_cpu_idx_next = 8'd0;
+            active_slot_next    = {SLOT_IDX_WIDTH{1'b0}};
+            active_ch_next      = {CH_IDX_WIDTH{1'b0}};
+            active_cpu_idx_next = 5'd0;
 
             // First, NMIs
             for (s = 0; s < NUM_SLOTS; s = s + 1) begin
@@ -183,8 +183,8 @@ module irq_router #(
                     route_entry = nmi_route_slot[s];
                     active_valid_next   = 1'b1;
                     active_is_nmi_next  = 1'b1;
-                    active_slot_next    = s[7:0];
-                    active_ch_next      = 8'd0;
+                    active_slot_next    = s[SLOT_IDX_WIDTH-1:0];
+                    active_ch_next      = {CH_IDX_WIDTH{1'b0}};
                     active_cpu_idx_next = route_entry;
                 end
             end
@@ -197,8 +197,8 @@ module irq_router #(
                             route_entry = int_route_slot_ch[s][c];
                             active_valid_next   = 1'b1;
                             active_is_nmi_next  = 1'b0;
-                            active_slot_next    = s[7:0];
-                            active_ch_next      = c[7:0];
+                            active_slot_next    = s[SLOT_IDX_WIDTH-1:0];
+                            active_ch_next      = c[CH_IDX_WIDTH-1:0];
                             active_cpu_idx_next = route_entry;
                         end
                     end
@@ -216,9 +216,9 @@ module irq_router #(
             pending_nmi    <= {NUM_SLOTS{1'b0}};
             active_valid   <= 1'b0;
             active_is_nmi  <= 1'b0;
-            active_slot    <= 8'd0;
-            active_ch      <= 8'd0;
-            active_cpu_idx <= 8'd0;
+            active_slot    <= {SLOT_IDX_WIDTH{1'b0}};
+            active_ch      <= {CH_IDX_WIDTH{1'b0}};
+            active_cpu_idx <= 5'd0;
             //cfg_rdata      <= 32'h0000_0000;
 
         end else begin
@@ -237,9 +237,9 @@ module irq_router #(
         if (!rst_n) begin
             //cfg_rdata <= 32'h0000_0000;
             for (s = 0; s < NUM_SLOTS; s = s + 1) begin
-                nmi_route_slot[s] <= 8'h00;
+                nmi_route_slot[s] <= 5'd0;
                 for (c = 0; c < NUM_TILE_INT_CH; c = c + 1)
-                    int_route_slot_ch[s][c] <= 8'h00;
+                    int_route_slot_ch[s][c] <= 5'd0;
             end
         end else begin
             //cfg_rdata <= 32'h0000_0000;
@@ -252,10 +252,10 @@ module irq_router #(
                 if (idx < (NUM_SLOTS*NUM_TILE_INT_CH)) begin
                     slot_sel = idx / NUM_TILE_INT_CH;
                     ch_sel   = idx % NUM_TILE_INT_CH;
-                    int_route_slot_ch[slot_sel][ch_sel] <= cfg_wdata[7:0];
+                    int_route_slot_ch[slot_sel][ch_sel] <= {cfg_wdata[7], cfg_wdata[3:0]};
                 end else if (idx < (NUM_SLOTS*NUM_TILE_INT_CH + NUM_SLOTS)) begin
                     slot_sel = idx - (NUM_SLOTS*NUM_TILE_INT_CH);
-                    nmi_route_slot[slot_sel] <= cfg_wdata[7:0];
+                    nmi_route_slot[slot_sel] <= {cfg_wdata[7], cfg_wdata[3:0]};
                 end
             end
         end
@@ -268,12 +268,12 @@ module irq_router #(
         cpu_int = {NUM_CPU_INT{1'b0}};
         cpu_nmi = {NUM_CPU_NMI{1'b0}};
 
-        if (active_valid && !active_is_nmi && active_cpu_idx[7]) begin
+        if (active_valid && !active_is_nmi && active_cpu_idx[4]) begin
             if (active_cpu_idx[3:0] < NUM_CPU_INT)
                 cpu_int[active_cpu_idx[3:0]] = 1'b1;
         end
 
-        if (active_valid && active_is_nmi && active_cpu_idx[7]) begin
+        if (active_valid && active_is_nmi && active_cpu_idx[4]) begin
             if (active_cpu_idx[3:0] < NUM_CPU_NMI)
                 cpu_nmi[active_cpu_idx[3:0]] = 1'b1;
         end

@@ -1,0 +1,109 @@
+# Dummy pin assignment for MachXO2 (LCMXO2-4000 TQFP) targeting `top`
+# Generated from MachXO2144-PinTQFPPackageMigrationFile.csv (skipping power/ground).
+
+set_io addr[0]   PL3A
+set_io addr[1]   PL3B
+set_io addr[2]   PL4A
+set_io addr[3]   PL4B
+set_io addr[4]   PL6A
+set_io addr[5]   PL6B
+set_io addr[6]   PL7A
+set_io addr[7]   PL7B
+set_io addr[8]   PL8A
+set_io addr[9]   PL8B
+set_io addr[10]  PL9A
+set_io addr[11]  PL9B
+set_io addr[12]  PL10A
+set_io addr[13]  PL10B
+set_io addr[14]  PL10C
+set_io addr[15]  PL10D
+set_io addr[16]  PL13A
+set_io addr[17]  PL13B
+set_io addr[18]  PL14A
+set_io addr[19]  PL14B
+set_io addr[20]  PL16A
+set_io addr[21]  PL16B
+set_io addr[22]  PL17A
+set_io addr[23]  PL17B
+set_io addr[24]  PL18D
+set_io addr[25]  PL19A
+set_io addr[26]  PL19B
+set_io addr[27]  PL20A
+set_io addr[28]  PL20B
+set_io addr[29]  PB3A
+set_io addr[30]  PB3B
+set_io addr[31]  PB4A
+
+set_io iorq_n        PB4B
+set_io r_w_          PB7A
+set_io irq_vec_cycle PB7B
+set_io irq_ack       PB9A
+
+set_io ready_n   PB9B
+set_io io_r_w_   PB10A
+set_io data_oe_n PB10B
+set_io data_dir  PB13A
+set_io ff_oe_n   PB13B
+
+set_io cs_n[0] PB15A
+set_io cs_n[1] PB15B
+set_io cs_n[2] PB20A
+set_io cs_n[3] PB20B
+set_io cs_n[4] PB21A
+
+set_io cpu_int[0] PB21B
+set_io cpu_int[1] PB23A
+set_io cpu_int[2] PB23B
+set_io cpu_int[3] PB24A
+
+set_io cpu_nmi[0] PB24B
+set_io cpu_nmi[1] PB24D
+
+set_io dev_ready_n[0] PB27A
+set_io dev_ready_n[1] PB27B
+set_io dev_ready_n[2] PB29A
+set_io dev_ready_n[3] PB29B
+set_io dev_ready_n[4] PB30A
+
+set_io tile_int_req[0] PB30B
+set_io tile_int_req[1] PR19B
+set_io tile_int_req[2] PR19A
+set_io tile_int_req[3] PR18B
+set_io tile_int_req[4] PR18A
+set_io tile_int_req[5] PR16B
+set_io tile_int_req[6] PR16A
+set_io tile_int_req[7] PR15B
+set_io tile_int_req[8] PR15A
+set_io tile_int_req[9] PR14B
+
+set_io tile_nmi_req[0] PR14A
+set_io tile_nmi_req[1] PR13B
+set_io tile_nmi_req[2] PR13A
+set_io tile_nmi_req[3] PR10D
+set_io tile_nmi_req[4] PR10C
+
+set_io slot_ack[0] PR10B
+set_io slot_ack[1] PR10A
+set_io slot_ack[2] PR9B
+set_io slot_ack[3] PR9A
+set_io slot_ack[4] PR8B
+
+set_io cfg_clk   PR8A
+set_io cfg_we    PR6B
+set_io cfg_addr[0] PR6A
+set_io cfg_addr[1] PR5B
+set_io cfg_addr[2] PR5A
+set_io cfg_addr[3] PR4C
+set_io cfg_addr[4] PR3B
+set_io cfg_addr[5] PR3A
+set_io cfg_addr[6] PR2B
+set_io cfg_addr[7] PR2A
+
+set_io cfg_wdata[0] PT28D
+set_io cfg_wdata[1] PT28C
+set_io cfg_wdata[2] PT27B
+set_io cfg_wdata[3] PT27A
+set_io cfg_wdata[4] PT25B
+set_io cfg_wdata[5] PT25A
+set_io cfg_wdata[6] PT24B
+set_io cfg_wdata[7] PT24A
