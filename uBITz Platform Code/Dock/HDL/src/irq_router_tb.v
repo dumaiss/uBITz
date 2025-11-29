@@ -20,7 +20,6 @@ module irq_router_tb;
     logic                                 cfg_wr_en;
     logic [7:0]                           cfg_addr;
     logic [7:0]                           cfg_wdata;
-    wire  [31:0]                          cfg_wdata_wide = {24'h0, cfg_wdata};
 
     // Device under test
     irq_router #(
@@ -44,7 +43,7 @@ module irq_router_tb;
         .cfg_wr_en  (cfg_wr_en),
         .cfg_rd_en  (1'b0),
         .cfg_addr   (cfg_addr),
-        .cfg_wdata  (cfg_wdata_wide)
+        .cfg_wdata  (cfg_wdata)
     );
 
     // Clock generation

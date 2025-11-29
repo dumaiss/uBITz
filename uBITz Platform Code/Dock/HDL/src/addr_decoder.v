@@ -107,7 +107,6 @@ module addr_decoder #(
         .ADDR_W (ADDR_W),
         .NUM_WIN(NUM_WIN)
     ) u_cfg (
-        .rst_n    (rst_n),
         .cfg_clk   (cfg_clk),
         .cfg_we    (cfg_we),
         .cfg_addr  (cfg_addr),
