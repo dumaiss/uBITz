@@ -27,7 +27,8 @@ module irq_router #(
     parameter integer NUM_CPU_INT      = 4,
     parameter integer NUM_CPU_NMI      = 2,
     parameter integer NUM_TILE_INT_CH  = 2,
-    parameter integer CFG_ADDR_WIDTH   = 8
+    parameter integer CFG_ADDR_WIDTH   = 8,
+	parameter integer SLOT_IDX_WIDTH  = (NUM_SLOTS <= 1) ? 1 : $clog2(NUM_SLOTS)
 )(
     input  wire                         clk,
     input  wire                         rst_n,   // synchronous active-low reset
@@ -55,12 +56,12 @@ module irq_router #(
     input  wire                         cfg_wr_en,
     input  wire                         cfg_rd_en,
     input  wire [CFG_ADDR_WIDTH-1:0]    cfg_addr,
-    input  wire [31:0]                  cfg_wdata,
-    output reg  [31:0]                  cfg_rdata
+    input  wire [31:0]                  cfg_wdata
+//    output reg  [31:0]                  cfg_rdata
 );
 
     // Width needed to index NUM_SLOTS slots
-    localparam integer SLOT_IDX_WIDTH = (NUM_SLOTS <= 1) ? 1 : $clog2(NUM_SLOTS);
+    //localparam integer SLOT_IDX_WIDTH = (NUM_SLOTS <= 1) ? 1 : $clog2(NUM_SLOTS);
 
     // ------------------------------------------------------------------
     // Routing tables
@@ -218,7 +219,7 @@ module irq_router #(
             active_slot    <= 8'd0;
             active_ch      <= 8'd0;
             active_cpu_idx <= 8'd0;
-            cfg_rdata      <= 32'h0000_0000;
+            //cfg_rdata      <= 32'h0000_0000;
 
         end else begin
             pending_int    <= pending_int_next;
@@ -234,14 +235,14 @@ module irq_router #(
     // Config domain: route table access synchronized to cfg_clk
     always @(posedge cfg_clk or negedge rst_n) begin
         if (!rst_n) begin
-            cfg_rdata <= 32'h0000_0000;
+            //cfg_rdata <= 32'h0000_0000;
             for (s = 0; s < NUM_SLOTS; s = s + 1) begin
                 nmi_route_slot[s] <= 8'h00;
                 for (c = 0; c < NUM_TILE_INT_CH; c = c + 1)
                     int_route_slot_ch[s][c] <= 8'h00;
             end
         end else begin
-            cfg_rdata <= 32'h0000_0000;
+            //cfg_rdata <= 32'h0000_0000;
             // Config writes
             if (cfg_wr_en) begin
                 integer idx;

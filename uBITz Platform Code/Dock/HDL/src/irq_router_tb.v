@@ -17,9 +17,10 @@ module irq_router_tb;
     logic [NUM_SLOTS-1:0]                 slot_ack;
     logic                                 irq_int_active;
     logic [SLOT_IDX_WIDTH-1:0]            irq_int_slot;
-    logic                                 cfg_wr_en, cfg_rd_en;
+    logic                                 cfg_wr_en;
     logic [7:0]                           cfg_addr;
-    logic [31:0]                          cfg_wdata, cfg_rdata;
+    logic [7:0]                           cfg_wdata;
+    wire  [31:0]                          cfg_wdata_wide = {24'h0, cfg_wdata};
 
     // Device under test
     irq_router #(
@@ -41,10 +42,9 @@ module irq_router_tb;
         .irq_int_active(irq_int_active),
         .irq_int_slot(irq_int_slot),
         .cfg_wr_en  (cfg_wr_en),
-        .cfg_rd_en  (cfg_rd_en),
+        .cfg_rd_en  (1'b0),
         .cfg_addr   (cfg_addr),
-        .cfg_wdata  (cfg_wdata),
-        .cfg_rdata  (cfg_rdata)
+        .cfg_wdata  (cfg_wdata_wide)
     );
 
     // Clock generation
@@ -57,7 +57,6 @@ module irq_router_tb;
     initial begin
         rst_n       = 0;
         cfg_wr_en   = 0;
-        cfg_rd_en   = 0;
         irq_ack     = 0;
         cfg_addr    = 0;
         cfg_wdata   = 0;
@@ -77,21 +76,10 @@ module irq_router_tb;
     begin
         @(posedge clk);
         cfg_addr  <= addr;
-        cfg_wdata <= {24'h0, data};
+        cfg_wdata <= data;
         cfg_wr_en <= 1;
         @(posedge clk);
         cfg_wr_en <= 0;
-    end
-    endtask
-
-    task automatic cfg_read(input byte addr, output byte data);
-    begin
-        @(posedge clk);
-        cfg_addr  <= addr;
-        cfg_rd_en <= 1;
-        @(posedge clk);
-        data      = cfg_rdata[7:0];
-        cfg_rd_en <= 0;
     end
     endtask
 
@@ -122,8 +110,6 @@ module irq_router_tb;
 
     // Stimulus
     initial begin : tests
-        byte rd;
-
         // Wait for reset release
         @(posedge rst_n);
         @(posedge clk);
@@ -132,9 +118,6 @@ module irq_router_tb;
         if (cpu_int !== '0 || cpu_nmi !== '0 || slot_ack !== '0) begin
             $fatal(1, "Test0 fail: outputs not idle after reset cpu_int=%b cpu_nmi=%b slot_ack=%b", cpu_int, cpu_nmi, slot_ack);
         end
-        // Optional readback; cfg_rdata will be 0 from design
-        cfg_read(0, rd);
-        if (rd !== 8'h00) $fatal(1, "Test0 fail: cfg read not zero");
 
         // Test 1: basic INT route and deassert
         route_int(0, 0, 1, 0);

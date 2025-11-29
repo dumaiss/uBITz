@@ -35,8 +35,7 @@
 module addr_decoder #(
     parameter ADDR_W    = 32, // address bus width (up to 32)
     parameter NUM_WIN   = 16, // number of decode windows (up to 16)
-    parameter NUM_SLOTS = 5,   // number of chip-select outputs (slots)
-	parameter integer SLOT_IDX_WIDTH  = (NUM_SLOTS <= 1) ? 1 : $clog2(NUM_SLOTS)
+    parameter NUM_SLOTS = 5   // number of chip-select outputs (slots)
 )(
     input  [ADDR_W-1:0] addr,
     input               iorq_n,
@@ -75,7 +74,7 @@ module addr_decoder #(
 
     localparam integer WIN_INDEX_W = 4; // supports NUM_WIN <= 16
     // Width needed to index NUM_SLOTS slots (matches irq_router)
-    //localparam integer SLOT_IDX_WIDTH = (NUM_SLOTS <= 1) ? 1 : $clog2(NUM_SLOTS);
+    localparam integer SLOT_IDX_WIDTH = (NUM_SLOTS <= 1) ? 1 : $clog2(NUM_SLOTS);
 
     // Flattened config tables for module interconnect (from addr_decoder_cfg)
     logic [NUM_WIN*ADDR_W-1:0] base_flat; // concatenated BASE registers

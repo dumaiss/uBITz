@@ -3,6 +3,7 @@
 `timescale 1ns/1ps
 
 module addr_decoder_tb;
+    localparam [7:0] IRQ_CFG_BASE = 8'hC0;
     reg        clk;
     reg  [7:0] addr;
     reg        iorq_n;
@@ -34,6 +35,9 @@ module addr_decoder_tb;
         input [7:0] t_addr;
         input [7:0] t_data;
         begin
+            if (t_addr >= IRQ_CFG_BASE) begin
+                $fatal("cfg_write addr %0h is in IRQ region (>= %0h)", t_addr, IRQ_CFG_BASE);
+            end
             cfg_addr  = t_addr;
             cfg_wdata = t_data;
             cfg_we    <= 1'b1;

@@ -2,6 +2,7 @@
 
 // Complex 32-bit / 16-window testbench for the addr_decoder module.
 module addr_decoder_tb_32bit;
+    localparam [7:0] IRQ_CFG_BASE = 8'hC0;
     reg  [31:0] addr;
     reg         iorq_n;
     reg         clk;
@@ -103,6 +104,9 @@ module addr_decoder_tb_32bit;
     // Helper tasks
     task cfg_write(input [7:0] a, input [7:0] d);
     begin
+        if (a >= IRQ_CFG_BASE) begin
+            $fatal("cfg_write addr %0h is in IRQ region (>= %0h)", a, IRQ_CFG_BASE);
+        end
         @(posedge cfg_clk);
         cfg_addr  <= a;
         cfg_wdata <= d;

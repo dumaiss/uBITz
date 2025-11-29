@@ -2,6 +2,7 @@
 
 // Behavioral testbench for the addr_decoder module.
 module tb_addr_decoder;
+    localparam [7:0] IRQ_CFG_BASE = 8'hC0;
     reg  [7:0] addr;
     reg        iorq_n;
     reg        clk;
@@ -97,6 +98,9 @@ module tb_addr_decoder;
     // Tasks
     task cfg_write(input [7:0] a, input [7:0] d);
     begin
+        if (a >= IRQ_CFG_BASE) begin
+            $fatal("cfg_write addr %0h is in IRQ region (>= %0h)", a, IRQ_CFG_BASE);
+        end
         @(posedge cfg_clk);
         cfg_addr  <= a;
         cfg_wdata <= d;
