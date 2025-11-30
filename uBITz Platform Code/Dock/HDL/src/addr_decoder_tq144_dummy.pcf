@@ -1,0 +1,100 @@
+# Dummy pin assignment for iCE40 HX8K TQ144 package (addr_decoder top).
+# Pins selected from ice40Pinout-tq144.csv; values are arbitrary but valid.
+
+# Address bus
+set_io addr[0]  1
+set_io addr[1]  2
+set_io addr[2]  3
+set_io addr[3]  4
+set_io addr[4]  7
+set_io addr[5]  8
+set_io addr[6]  9
+set_io addr[7]  10
+set_io addr[8]  11
+set_io addr[9]  12
+set_io addr[10] 15
+set_io addr[11] 16
+set_io addr[12] 17
+set_io addr[13] 18
+set_io addr[14] 19
+set_io addr[15] 20
+set_io addr[16] 21
+set_io addr[17] 22
+set_io addr[18] 23
+set_io addr[19] 24
+set_io addr[20] 25
+set_io addr[21] 26
+set_io addr[22] 28
+set_io addr[23] 29
+set_io addr[24] 31
+set_io addr[25] 32
+set_io addr[26] 33
+set_io addr[27] 34
+set_io addr[28] 37
+set_io addr[29] 38
+set_io addr[30] 39
+set_io addr[31] 41
+
+# Qualifiers and control
+set_io iorq_n 42
+set_io rst_n  43
+set_io r_w_   44
+set_io clk    49
+
+# Device ready inputs (active-low)
+set_io dev_ready_n[0] 45
+set_io dev_ready_n[1] 47
+set_io dev_ready_n[2] 48
+set_io dev_ready_n[3] 52
+set_io dev_ready_n[4] 55
+
+# Config interface
+set_io cfg_clk     56
+set_io cfg_we      60
+set_io cfg_addr[0] 61
+set_io cfg_addr[1] 62
+set_io cfg_addr[2] 63
+set_io cfg_addr[3] 64
+set_io cfg_addr[4] 67
+set_io cfg_addr[5] 68
+set_io cfg_addr[6] 70
+set_io cfg_addr[7] 71
+set_io cfg_wdata[0] 73
+set_io cfg_wdata[1] 74
+set_io cfg_wdata[2] 75
+set_io cfg_wdata[3] 76
+set_io cfg_wdata[4] 78
+set_io cfg_wdata[5] 79
+set_io cfg_wdata[6] 80
+set_io cfg_wdata[7] 81
+
+# Active-low chip selects
+set_io cs_n[0] 82
+set_io cs_n[1] 83
+set_io cs_n[2] 84
+set_io cs_n[3] 85
+set_io cs_n[4] 87
+
+# Status outputs
+set_io ready_n     88
+set_io win_valid   90
+set_io win_index[0] 91
+set_io win_index[1] 93
+set_io win_index[2] 94
+set_io win_index[3] 95
+set_io sel_slot[0] 96
+set_io sel_slot[1] 97
+set_io sel_slot[2] 98
+set_io io_r_w_     99
+
+# Data bus transceiver controls
+set_io data_oe_n 101
+set_io data_dir  102
+set_io ff_oe_n   104
+
+# Interrupt vector steering inputs
+set_io irq_int_active   105
+set_io irq_int_slot[0]  106
+set_io irq_int_slot[1]  107
+set_io irq_int_slot[2]  110
+set_io irq_vec_cycle    112

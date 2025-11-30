@@ -20,6 +20,7 @@ uBITz Platform Code/Dock/src/*.out
 uBITz Platform Code/Dock/src/*.vcd
 /uBITz Platform Code/Dock/MCU/includes
 /uBITz Platform Code/Dock/MCU/build
+/uBITz Platform Code/Dock/HDL/build
 uBITz Platform Code/Dock/Schem/uBITz-Dock-Reference-Impl/~uBITz-Dock-Reference-Impl.kicad_sch.lck
 sim_files.f
 synth_xo2.ys
@@ -40,3 +41,13 @@ tmp/ivrli336b
 uBITz Platform Code/Dock/HDL/build/addr_decoder_tb.vvp
 uBITz Platform Code/Dock/HDL/build/irq_router_tb.vvp
 uBITz Platform Code/Dock/HDL/src/a.out
+uBITz Platform Code/Dock/HDL/src/build/cmake_install.cmake
+.gitignore
+.gitignore
+uBITz Platform Code/Dock/HDL/src/build/hardware.asc
+uBITz Platform Code/Dock/HDL/src/build/hardware.bin
+uBITz Platform Code/Dock/HDL/src/build/hardware.json
+uBITz Platform Code/Dock/HDL/src/build/hardware.rpt
+.gitignore
+uBITz Platform Code/Dock/HDL/src/build/synth.ys
+uBITz Platform Code/Dock/HDL/src/build/CMakeFiles/cmake.check_cache
