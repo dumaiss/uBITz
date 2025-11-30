@@ -19,10 +19,10 @@ module addr_decoder_cfg #(
     input  logic [7:0]  cfg_addr,
     input  logic [7:0]  cfg_wdata,
 
-    output logic [NUM_WIN*ADDR_W-1:0] base_flat,
-    output logic [NUM_WIN*ADDR_W-1:0] mask_flat,
-    output logic [NUM_WIN*3-1:0]      slot_flat,
-    output logic [NUM_WIN*8-1:0]      op_flat
+    output logic [NUM_WIN*ADDR_W-1:0] base_flat = '0,
+    output logic [NUM_WIN*ADDR_W-1:0] mask_flat = '0,
+    output logic [NUM_WIN*3-1:0]      slot_flat = '0,
+    output logic [NUM_WIN*8-1:0]      op_flat   = {NUM_WIN*8{1'b1}} // all ones = 0xFF per byte
 );
 
     // Number of bytes needed to represent the ADDR_W-bit BASE/MASK fields.
@@ -33,11 +33,6 @@ module addr_decoder_cfg #(
     localparam integer MASK_OFF = BASE_OFF + (NUM_WIN * CFG_BYTES);
     localparam integer SLOT_OFF = MASK_OFF + (NUM_WIN * CFG_BYTES);
     localparam integer OP_OFF   = SLOT_OFF + NUM_WIN;
-
-    logic [NUM_WIN*ADDR_W-1:0] base_flat = '0;
-    logic [NUM_WIN*ADDR_W-1:0] mask_flat = '0;
-    logic [NUM_WIN*3-1:0]      slot_flat = '0;
-    logic [NUM_WIN*8-1:0]      op_flat   = {NUM_WIN*8{1'b1}}; // all ones = 0xFF per byte
 
     // Byte-wise config writes, with explicit region decode
 	always_ff @(posedge cfg_clk) begin

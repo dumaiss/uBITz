@@ -81,7 +81,7 @@ module top_integration_tb;
 
     task automatic dec_cfg_write(input [7:0] a, input [7:0] d);
     begin
-        if (a >= IRQ_CFG_BASE) $fatal("Decoder cfg addr %0h in IRQ region", a);
+        if (a >= IRQ_CFG_BASE) $fatal(1, "Decoder cfg addr %0h in IRQ region", a);
         @(posedge cfg_clk);
         cfg_addr  <= a;
         cfg_wdata <= d;
@@ -113,14 +113,14 @@ module top_integration_tb;
         @(posedge clk);
         #1;
         if (cs_n[exp_slot] !== 1'b0) begin
-            $fatal("cs_n mismatch at addr %0h: expected slot %0d active, cs_n=%b", a, exp_slot, cs_n);
+            $fatal(1, "cs_n mismatch at addr %0h: expected slot %0d active, cs_n=%b", a, exp_slot, cs_n);
         end
         @(negedge clk);
         iorq_n = 1'b1;
         @(posedge clk);
         #1;
         if (cs_n !== {NUM_SLOTS{1'b1}}) begin
-            $fatal("cs_n did not return idle: cs_n=%b", cs_n);
+            $fatal(1, "cs_n did not return idle: cs_n=%b", cs_n);
         end
     end
     endtask
@@ -161,7 +161,7 @@ module top_integration_tb;
         dec_cfg_write(8'h0C, 8'hFF); // op[0] = any
 
         // Program IRQ route: slot1,ch0 -> CPU INT0 (enable=1, idx=0).
-        irq_cfg_write(int_idx(1,0)[7:0], 8'h80);
+        irq_cfg_write(int_idx(1,0), 8'h80);
 
         // Sanity: decoder responds to low-range config (IRQ range unused).
         io_cycle_expect_slot(8'h10, 1); // expect cs_n[1] asserted low
@@ -170,12 +170,12 @@ module top_integration_tb;
         tile_int_req[int_idx(1,0)] = 1'b1;
         repeat (2) @(posedge clk);
         if (cpu_int !== 2'b01) begin
-            $fatal("cpu_int not asserted for slot1,ch0: cpu_int=%b", cpu_int);
+            $fatal(1, "cpu_int not asserted for slot1,ch0: cpu_int=%b", cpu_int);
         end
         tile_int_req[int_idx(1,0)] = 1'b0;
         repeat (2) @(posedge clk);
         if (cpu_int !== 2'b00) begin
-            $fatal("cpu_int did not clear: cpu_int=%b", cpu_int);
+            $fatal(1, "cpu_int did not clear: cpu_int=%b", cpu_int);
         end
 
         $display("top_integration_tb passed.");
