@@ -107,7 +107,7 @@ A[31:24] are tied low (0). A[23:0] driven via LS612 + translation.
 Rationale:
 - Enough logic for:
   - cycle qualification (/MREQ vs /IORQ handling)
-  - generating μBITz qualifiers (`/RAM_CS`, `/ROM_CS`, `R/W_`, `/CPU_ACK`)
+  - generating μBITz qualifiers (`/MEM0_CS`, `/MEM1_CS`, `R/W_`, `/CPU_ACK`)
   - data-transceiver DIR/OE control
   - clock divide and basic safety interlocks
   - optional mapper control exposure (host-defined)
@@ -131,7 +131,7 @@ Pins (approx):
 - CPU control inputs: `/MREQ`, `/IORQ`, `/RD`, `/WR`, `/M1`, `/RESET` → ~6
 - μBITz bus inputs: `/READY`, `CPU_INT[x]`, `CPU_NMI[x]` → ~6–8
 - CPU outputs: `/WAIT`, `/INT`, `/NMI` → ~3
-- μBITz qualifiers outputs: `/RAM_CS`, `/ROM_CS`, `R/W_`, `/CPU_ACK` → ~4
+- μBITz qualifiers outputs: `/MEM0_CS`, `/MEM1_CS`, `R/W_`, `/CPU_ACK` → ~4
 - Data-transceiver control: `DIR`, `/OE` → ~2
 
 **Total:** ~21–23 pins (≈65–72% of 32)
@@ -285,7 +285,7 @@ Rationale:
 CPLD is responsible for producing clean μBITz qualifiers:
 - `/MREQ` and `/IORQ` qualification as required by μBITz timing rules
 - `R/W_` derived from CPU read/write strobes
-- `/RAM_CS` and `/ROM_CS` (policy-defined; no fixed windows reserved here)
+- `/MEM0_CS` and `/MEM1_CS` (policy-defined; no fixed windows reserved here)
 - `/CPU_ACK` generation for interrupt acknowledge (Z80 IM2-style)
 
 `/READY` from Bank/Dock is adapted to Z80 `/WAIT` behavior.
@@ -336,7 +336,7 @@ Minimum:
 - `/RESET`
 - `/MREQ`, `/IORQ`, `/RD`, `/WR`, `/WAIT`
 - DIR, /OE of data translator
-- `/RAM_CS`, `/ROM_CS`, `/READY`
+- `/MEM0_CS`, `/MEM1_CS`, `/READY`
 
 ### 12.3 Bring-up hooks (recommended)
 - Optional clock divide “safe mode” strap (boot at slow clock)
