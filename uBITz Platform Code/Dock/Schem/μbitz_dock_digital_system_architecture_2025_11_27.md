@@ -1850,3 +1850,70 @@ The following table summarizes the main categories of nets crossing the Dock Dig
 |**Misc. debug**|Out (optional)|`DBG_LED[n]`, `STATUS[n]`|Optional debug/status lines exposed to LEDs or headers on the top-level.|
 
 In KiCad, these groups translate directly into **hierarchical sheet pins** on the Dock Digital sheet symbol. The internal implementation (MCU, CPLD, FTDI, hub, RTC, I²C switch, GPIO expander) is then free to evolve as long as these external contracts remain stable.
+
+### Power Budget Guidelines
+
+**Historical Context:**
+A fully-loaded Commodore 64 drew 5W total (5V @ 1A).
+This powered a complete computer system including CPU, 
+graphics, sound, memory, and I/O.
+
+**μBITz Power Budget:**
+- 5V rail: 20W available (4× C64)
+- 3.3V rail: 6.6W available (1.3× C64)
+- Total: 26W+ (5× C64)
+
+**Tile Design Targets:**
+- Simple tiles: <1.5W (target 30% of C64)
+- Complex tiles: <3W (target 60% of C64)
+- Maximum: <5W (do not exceed complete C64!)
+
+If your tile draws more than a complete C64 system,
+reconsider your design choices!
+
+**Why This Matters:**
+✓ Ensures thermal manageability
+✓ Allows multiple tiles in system
+✓ Keeps power supply simple
+✓ Maintains hobbyist accessibility
+✓ No SCADs™ required beyond Power Module
+```
+
+---
+
+## **Silkscreen Update:**
+
+**Add to the Power Module output section:**
+```
+┌─────────────────────────────┐
+│  5V @ 4A = 20W              │
+│  "4× C64 Power Budget"      │
+│                             │
+│  3.3V @ 2A = 6.6W           │
+│  "1.3× C64 Power Budget"    │
+│                             │
+│  Total: 5× C64 Capability   │
+│  In a Modular Platform!     │
+└─────────────────────────────┘
+```
+
+---
+
+## **The Beautiful Irony:**
+```
+Modern "retro-style" SoC (like RP2040):
+- Dual ARM cores @ 133MHz
+- 264KB RAM
+- Tons of peripherals
+- Power consumption: ~100mW
+
+That's 2% of a C64's power for 100× the computing power! 😄
+
+But we're building AUTHENTIC retro, so:
+- Real discrete logic
+- Period-accurate chips  
+- Educational value
+- Hackability
+- Fun factor
+
+Worth the extra watts!
