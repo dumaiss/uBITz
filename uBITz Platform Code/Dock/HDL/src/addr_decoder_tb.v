@@ -36,7 +36,7 @@ module addr_decoder_tb;
         input [7:0] t_data;
         begin
             if (t_addr >= IRQ_CFG_BASE) begin
-                $fatal("cfg_write addr %0h is in IRQ region (>= %0h)", t_addr, IRQ_CFG_BASE);
+                $fatal(1, "cfg_write addr %0h is in IRQ region (>= %0h)", t_addr, IRQ_CFG_BASE);
             end
             cfg_addr  = t_addr;
             cfg_wdata = t_data;
@@ -60,18 +60,18 @@ module addr_decoder_tb;
 
             if (io_r_w_ !== 1'b1) begin
                 $display("FAIL: addr=%02h qualifier inactive expects io_r_w_=1 got %b", addr, io_r_w_);
-                $fatal;
+                $fatal(1);
             end
 
             if (cs !== exp_cs) begin
                 $display("FAIL: addr=%02h iorq_n=%b cs=%05b exp=%05b (win_valid=%b idx=%0d slot=%0d)",
                          addr, iorq_n, cs, exp_cs, win_valid, win_index, sel_slot);
-                $fatal;
+                $fatal(1);
             end
 
             if (cs_n !== ~exp_cs) begin
                 $display("FAIL: addr=%02h cs_n mismatch cs_n=%05b exp=%05b", addr, cs_n, ~exp_cs);
-                $fatal;
+                $fatal(1);
             end
         end
     endtask
@@ -102,11 +102,11 @@ module addr_decoder_tb;
                 $display("FAIL entry: addr=%02h iorq_n=%b cs=%05b exp=%05b ready_n=%b io_r_w_=%b (exp %b) win_valid=%b idx=%0d slot=%0d",
                          addr, iorq_n, cs, exp_cs, ready_n, io_r_w_, exp_r_w_,
                          win_valid, win_index, sel_slot);
-                $fatal;
+                $fatal(1);
             end
             if (cs_n !== ~exp_cs) begin
                 $display("FAIL entry cs_n: addr=%02h cs_n=%05b exp=%05b", addr, cs_n, ~exp_cs);
-                $fatal;
+                $fatal(1);
             end
 
             ready_seen = 1'b0;
@@ -117,25 +117,25 @@ module addr_decoder_tb;
                     if (cs !== exp_cs || io_r_w_ !== exp_r_w_) begin
                         $display("FAIL active: addr=%02h iorq_n=%b cs=%05b exp=%05b ready_n=%b io_r_w_=%b (exp %b)",
                                  addr, iorq_n, cs, exp_cs, ready_n, io_r_w_, exp_r_w_);
-                        $fatal;
+                        $fatal(1);
                     end
                     if (cs_n !== ~exp_cs) begin
                         $display("FAIL active cs_n: addr=%02h cs_n=%05b exp=%05b", addr, cs_n, ~exp_cs);
-                        $fatal;
+                        $fatal(1);
                     end
                     if (ready_n === 1'b1) begin
                         ready_seen = 1'b1;
                         disable wait_loop;
                     end else if (ready_n !== 1'b0) begin
                         $display("FAIL active ready_n unknown: addr=%02h ready_n=%b", addr, ready_n);
-                        $fatal;
+                        $fatal(1);
                     end
                 end
             end
 
             if (!ready_seen) begin
                 $display("FAIL: addr=%02h did not see ready_n asserted within %0d cycles", addr, max_wait_cycles);
-                $fatal;
+                $fatal(1);
             end
 
             // End the cycle.
@@ -145,11 +145,11 @@ module addr_decoder_tb;
             #1;
             if (cs !== 5'b00000 || ready_n !== 1'b1 || io_r_w_ !== 1'b1) begin
                 $display("FAIL tail: addr=%02h cs=%05b ready_n=%b io_r_w_=%b", addr, cs, ready_n, io_r_w_);
-                $fatal;
+                $fatal(1);
             end
             if (cs_n !== ~5'b00000) begin
                 $display("FAIL tail cs_n: addr=%02h cs_n=%05b exp=%05b", addr, cs_n, ~5'b00000);
-                $fatal;
+                $fatal(1);
             end
         end
     endtask

@@ -99,7 +99,7 @@ module tb_addr_decoder;
     task cfg_write(input [7:0] a, input [7:0] d);
     begin
         if (a >= IRQ_CFG_BASE) begin
-            $fatal("cfg_write addr %0h is in IRQ region (>= %0h)", a, IRQ_CFG_BASE);
+            $fatal(1, "cfg_write addr %0h is in IRQ region (>= %0h)", a, IRQ_CFG_BASE);
         end
         @(posedge cfg_clk);
         cfg_addr  <= a;

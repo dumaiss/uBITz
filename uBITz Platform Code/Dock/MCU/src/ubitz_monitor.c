@@ -64,7 +64,7 @@ static void print_host(const ubitz_enum_snapshot_t *snap) {
             continue;
         }
         snprintf(buf, sizeof(buf),
-                 "win[%d]: func=0x%02X inst=%d iowin=0x%08X mask=0x%08X opsel=0x%02X flags=0x%02X\r\n",
+                 "win[%d]: func=0x%02X inst=%d iowin=0x%08lX mask=0x%08lX opsel=0x%02X flags=0x%02X\r\n",
                  i, w->function, w->instance, w->iowin, w->mask, w->opsel, w->flags);
         uart_write(buf);
     }
