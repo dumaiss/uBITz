@@ -1,0 +1,5 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Host")(type "KiCad")(uri "/home/kitamura/uBITz/uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/02-Libraries/Symbols/Host.kicad_sym")(options "")(descr ""))
+  (lib (name "Adafruit FT232H Original-eagle-import")(type "KiCad")(uri "${KIPRJMOD}/Adafruit FT232H Original-eagle-import.kicad_sym")(options "")(descr ""))
+)
