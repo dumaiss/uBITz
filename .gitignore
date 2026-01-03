@@ -94,20 +94,35 @@ uBITz Platform Code/Dock/Schem/uBITz-Dock-Reference-Impl/uBITz-Dock-Reference-Im
 uBITz Platform Code/Dock/Schem/uBITz-Dock-Reference-Impl/uBITz-Dock-Reference-Impl-backups/uBITz-Dock-Reference-Impl-2025-12-15_165432.zip
 uBITz Platform Code/Dock/Schem/uBITz-Dock-Reference-Impl/uBITz-Dock-Reference-Impl-backups/uBITz-Dock-Reference-Impl-2025-12-15_170130.zip
 uBITz Platform Code/Dock/Schem/uBITz-Dock-Reference-Impl/uBITz-Dock-Reference-Impl-backups/uBITz-Dock-Reference-Impl-2025-12-15_170834.zip
-uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups/uBITz-Host-z80-Host-2025-12-20_233957.zip
-uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups/uBITz-Host-z80-Host-2025-12-21_021254.zip
-uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups/uBITz-Host-z80-Host-2025-12-21_032506.zip
-uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups/uBITz-Host-z80-Host-2025-12-21_035642.zip
-uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups/uBITz-Host-z80-Host-2025-12-21_194849.zip
-uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups/uBITz-Host-z80-Host-2025-12-21_212448.zip
-uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups/uBITz-Host-z80-Host-2025-12-22_160954.zip
-uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups/uBITz-Host-z80-Host-2025-12-23_233303.zip
-uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups/uBITz-Host-z80-Host-2025-12-23_234927.zip
-uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups/uBITz-Host-z80-Host-2025-12-24_000111.zip
-uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups/uBITz-Host-z80-Host-2025-12-24_000717.zip
-uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups/uBITz-Host-z80-Host-2025-12-24_001648.zip
-uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups/uBITz-Host-z80-Host-2025-12-24_004219.zip
+uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host-backups
 uBITz Platform Code/Dock/MCU/sdkconfig
 uBITz Platform Code/Dock/MCU/sdkconfig
 uBITz Platform Code/Dock/MCU/.vscode/c_cpp_properties.json
 uBITz Platform Code/Dock/MCU/.vscode/settings.json
+uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/production/backups/uBITz-Host-z80-Host_2026-01-02_13-50-11.zip
+uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/04-Adafruit-FT232H
+uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/~*lck
+uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/production
+uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/bom
+.vscode
+uBITz Platform Code/Dock/MCU/.vscode/c_cpp_properties.json
+uBITz Platform Code/Dock/MCU/sdkconfig.old
+**/sdkconfig.old
+uBITz Platform Code/Dock/Schem/uBITz-Dock-Reference-Impl/fp-info-cache
+uBITz Platform Code/Dock/Schem/uBITz-Dock-Reference-Impl/fp-lib-table
+.gitignore
+uBITz Platform Code/Dock/Schem/uBITz-Dock-Reference-Impl/02-Libraries/Symbols/Dock_Library.bak
+.gitignore
+uBITz Platform Code/Dock/Schem/uBITz-Dock-Reference-Impl/04-Power-Module/fp-info-cache
+.gitignore
+uBITz Platform Code/Dock/Schem/uBITz-Dock-Reference-Impl/04-Power-Module/fp-lib-table
+uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/02-Libraries/Symbols/Host.bak
+uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/#auto_saved_files#
+uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/fabrication-toolkit-options.json
+uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/fp-info-cache
+uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/fp-lib-table
+uBITz Platform Code/Dock/MCU/.vscode/settings.json
+uBITz Platform Code/Dock/MCU/.vscode/c_cpp_properties.json
+uBITz Platform Code/Dock/MCU/sdkconfig.old
+uBITz Platform Code/Dock/MCU/sdkconfig
+uBITz Platform Code/Host/Schem/uBITz-Host-Reference-Impl/03-Z80-Based-Host/uBITz-Host-z80-Host/uBITz-Host-z80-Host.kicad_pcb.zip
