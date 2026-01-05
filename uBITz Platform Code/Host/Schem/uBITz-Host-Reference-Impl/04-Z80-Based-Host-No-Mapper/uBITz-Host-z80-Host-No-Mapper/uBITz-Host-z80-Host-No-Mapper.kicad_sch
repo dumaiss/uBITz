@@ -14599,7 +14599,7 @@
 		)
 		(uuid "2218bae7-c729-4f4c-92d1-c00ea63a98a9")
 	)
-	(label "~{B_MREQ}"
+	(label "~{BUS_MREQ}"
 		(at 657.86 386.08 0)
 		(effects
 			(font
@@ -14839,7 +14839,7 @@
 		)
 		(uuid "4d3b0591-cc59-4052-b3a3-db83d4e45301")
 	)
-	(label "~{B_IORQ}"
+	(label "~{BUS_IORQ}"
 		(at 657.86 388.62 0)
 		(effects
 			(font

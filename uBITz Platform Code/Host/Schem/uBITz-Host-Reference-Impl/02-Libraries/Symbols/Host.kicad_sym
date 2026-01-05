@@ -7091,7 +7091,7 @@
 			(pin passive line
 				(at 3.81 -3.81 180)
 				(length 5.08)
-				(name "~{DRV5V}"
+				(name "~{VIO_5V}"
 					(effects
 						(font
 							(size 1.016 1.016)
@@ -7181,7 +7181,7 @@
 			(pin passive line
 				(at 3.81 -16.51 180)
 				(length 5.08)
-				(name "~{SENS3V}"
+				(name "~{SLOT_PRSNT}"
 					(effects
 						(font
 							(size 1.016 1.016)
