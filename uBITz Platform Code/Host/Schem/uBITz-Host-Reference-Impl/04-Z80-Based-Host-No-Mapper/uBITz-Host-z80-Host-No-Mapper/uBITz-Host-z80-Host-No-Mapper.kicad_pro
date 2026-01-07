@@ -535,7 +535,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "uBITz-Host-z80-Host.kicad_pro",
+    "filename": "uBITz-Host-z80-Host-No-Mapper.kicad_pro",
     "version": 3
   },
   "net_settings": {
