@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Bank")(type "KiCad")(uri "/home/kitamura/uBITz/uBITz Platform Code/Bank/Schem/uBITz-Bank-Reference-Impl/02-Libraries/Symbols/Bank.kicad_sym")(options "")(descr ""))
+)
